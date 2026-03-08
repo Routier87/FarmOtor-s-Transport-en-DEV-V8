@@ -1,19 +1,80 @@
-const API=API_URL;
-const STAFF_ACCOUNTS={"Farm":"freddy123","oxiwanteed13":"1313","SuperCAT71":"FranceMulti_2026","Routier87":"200187"};
-function loginStaff(){const u=prompt("Utilisateur");if(!u)return;const p=prompt("Mot de passe");if(STAFF_ACCOUNTS[u]&&STAFF_ACCOUNTS[u]===p){localStorage.setItem("staff","true");localStorage.setItem("staffUser",u);alert("Connexion staff OK");location.reload();}else alert("Erreur connexion");}
-function logoutStaff(){localStorage.removeItem("staff");localStorage.removeItem("staffUser");location.reload();}
-function isStaff(){return localStorage.getItem("staff")==="true";}
-function protectStaff(){if(document.body.dataset.staff==="true"&&!isStaff()){alert("Accès réservé au staff");location.href="index.html";}}
-function toggleStaffLinks(){document.querySelectorAll("[data-staff-only='true']").forEach(el=>{if(isStaff())el.classList.remove("hidden");else el.classList.add("hidden");});const s=document.getElementById("staffBadge");if(s){s.innerHTML=isStaff()?'<span class="badge">Connecté staff : '+(localStorage.getItem("staffUser")||"staff")+'</span>':'<span class="badge">Non connecté staff</span>';}}
-function fileToBase64(file){return new Promise(res=>{if(!file)return res("");const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(file);});}
-async function loadConvoys(){const box=document.getElementById("convoys");const admin=document.getElementById("adminConvoys");if(!box&&!admin)return;const r=await fetch(API+'/convoys');const data=await r.json();if(box){box.innerHTML=data.length?data.map(c=>'<div class="card">'+(c.image?'<img src="'+c.image+'" alt="Convoi">':'')+'<h3>🚛 '+(c.depart||'-')+' ➜ '+(c.arrivee||'-')+'</h3><p class="small">'+(c.entrepriseDepart||'-')+' ➜ '+(c.entrepriseArrivee||'-')+'</p><p>'+(c.date||'-')+' | '+(c.heure||'-')+' | '+(c.serveur||'-')+'</p></div>').join(''):'<div class="card">Aucun convoi pour le moment.</div>';}if(admin){admin.innerHTML=data.length?data.map(c=>'<div class="card"><strong>'+(c.depart||'-')+' ➜ '+(c.arrivee||'-')+'</strong><br><span class="small">'+(c.entrepriseDepart||'-')+' ➜ '+(c.entrepriseArrivee||'-')+' | '+(c.date||'-')+' | '+(c.heure||'-')+' | '+(c.serveur||'-')+'</span><div class="page-actions" style="margin-top:12px"><button class="btn btn-red" onclick="deleteConvoy('+c.id+')">Supprimer</button><button class="btn btn-gold" onclick="editConvoy('+c.id+')">Modifier</button></div></div>').join(''):'<div class="card">Aucun convoi.</div>';}}
-async function deleteConvoy(id){await fetch(API+'/convoys/'+id,{method:'DELETE'});loadConvoys();}
-async function editConvoy(id){const depart=prompt('Nouvelle ville départ');if(!depart)return;const arrivee=prompt('Nouvelle ville arrivée');if(!arrivee)return;const date=prompt('Nouvelle date','');const heure=prompt('Nouvelle heure','');const entrepriseDepart=prompt('Nouvelle entreprise départ','');const entrepriseArrivee=prompt('Nouvelle entreprise arrivée','');const serveur=prompt('Nouveau serveur TMP','');await fetch(API+'/convoys/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({depart,arrivee,date,heure,entrepriseDepart,entrepriseArrivee,serveur})});loadConvoys();}
-function convoyForm(){const f=document.getElementById('convoyForm');if(!f)return;f.addEventListener('submit',async e=>{e.preventDefault();const img=await fileToBase64(document.getElementById('image').files[0]);const body={depart:document.getElementById('depart').value,arrivee:document.getElementById('arrivee').value,entrepriseDepart:document.getElementById('entrepriseDepart').value,entrepriseArrivee:document.getElementById('entrepriseArrivee').value,date:document.getElementById('date').value,heure:document.getElementById('heure').value,serveur:document.getElementById('serveur').value,image:img};await fetch(API+'/convoys',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});alert('Convoi créé, ajouté dans Convois.html et envoyé au webhook si configuré');f.reset();location.href='convois.html';});}
-function appForm(){const f=document.getElementById('appForm');if(!f)return;f.addEventListener('submit',async e=>{e.preventDefault();await fetch(API+'/applications',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pseudo:document.getElementById('pseudo').value,age:document.getElementById('age').value,plateforme:document.getElementById('plateforme').value,motivation:document.getElementById('motivation').value})});alert('Candidature envoyée');f.reset();});}
-async function loadAdminApps(){const a=document.getElementById('adminApps');if(!a)return;const r=await fetch(API+'/applications');const d=await r.json();a.innerHTML=d.length?d.map(x=>'<div class="card"><strong>'+(x.pseudo||'-')+'</strong><br><span class="small">'+(x.plateforme||'-')+' | '+(x.age||'-')+' ans | Statut : '+(x.status||'attente')+'</span><p>'+(x.motivation||'')+'</p><div class="page-actions"><button onclick="updateApp('+x.id+',\'accepte\')" class="btn btn-green">Accepter</button><button onclick="updateApp('+x.id+',\'refuse\')" class="btn btn-gold">Refuser</button><button onclick="deleteApp('+x.id+')" class="btn btn-red">Supprimer</button></div></div>').join(''):'<div class="card">Aucune candidature.</div>';}
-async function updateApp(id,s){await fetch(API+'/applications/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:s})});loadAdminApps();}
-async function deleteApp(id){await fetch(API+'/applications/'+id,{method:'DELETE'});loadAdminApps();}
-async function loadMods(){const list=document.getElementById('modsList');const admin=document.getElementById('adminMods');if(!list&&!admin)return;const r=await fetch(API+'/mods');const data=await r.json();if(list){list.innerHTML=data.length?data.map(m=>'<a class="mod-link" href="'+m.url+'" target="_blank">'+m.name+'</a>').join(''):'<div class="card">Aucun mod disponible.</div>';}if(admin){admin.innerHTML=data.length?data.map(m=>'<div class="card"><strong>'+m.name+'</strong><br><span class="small">'+m.url+'</span><div class="page-actions" style="margin-top:12px"><button class="btn btn-red" onclick="deleteMod('+m.id+')">Supprimer mod</button></div></div>').join(''):'<div class="card">Aucun mod.</div>';}}
-function modForm(){const f=document.getElementById('modForm');if(!f)return;f.addEventListener('submit',async e=>{e.preventDefault();await fetch(API+'/mods',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('modName').value,url:document.getElementById('modUrl').value})});alert('Mod ajouté');f.reset();loadMods();});}
-document.addEventListener('DOMContentLoaded',()=>{protectStaff();toggleStaffLinks();loadConvoys();convoyForm();appForm();loadAdminApps();loadMods();modForm();const a=document.getElementById('staffLoginBtn');if(a)a.onclick=loginStaff;const b=document.getElementById('staffLogoutBtn');if(b)b.onclick=logoutStaff;});
+const API = API_URL;
+
+function fileToBase64(file) {
+  return new Promise((resolve) => {
+    if (!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+function convoyForm() {
+  const f = document.getElementById("convoyForm");
+  if (!f) return;
+
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const img = await fileToBase64(document.getElementById("image").files[0]);
+
+    const body = {
+      depart: document.getElementById("depart").value,
+      arrivee: document.getElementById("arrivee").value,
+      entrepriseDepart: document.getElementById("entrepriseDepart").value,
+      entrepriseArrivee: document.getElementById("entrepriseArrivee").value,
+      date: document.getElementById("date").value,
+      heure: document.getElementById("heure").value,
+      serveur: document.getElementById("serveur").value,
+      image: img
+    };
+
+    const res = await fetch(API + "/convoys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      alert("Erreur lors de la création du convoi");
+      return;
+    }
+
+    alert("Convoi créé avec succès ✅");
+    f.reset();
+    window.location.href = "convois.html";
+  });
+}
+
+async function loadConvoys() {
+  const box = document.getElementById("convoys");
+  if (!box) return;
+
+  const r = await fetch(API + "/convoys");
+  const data = await r.json();
+
+  box.innerHTML = data.length
+    ? data.map(c => `
+      <div class="card">
+        ${c.image ? `<img src="${c.image}" alt="Image convoi">` : ""}
+
+        <h3>🚛 ${c.depart || "-"} ➜ ${c.arrivee || "-"}</h3>
+
+        <p><strong>📅 Date :</strong> ${c.date || "-"}</p>
+        <p><strong>⏰ Heure :</strong> ${c.heure || "-"}</p>
+        <p><strong>🖥️ Serveur :</strong> ${c.serveur || "-"}</p>
+        <p><strong>🏢 Entreprise départ :</strong> ${c.entrepriseDepart || "-"}</p>
+        <p><strong>🏢 Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</p>
+        <p><strong>🌍 Ville départ :</strong> ${c.depart || "-"}</p>
+        <p><strong>🌍 Ville arrivée :</strong> ${c.arrivee || "-"}</p>
+      </div>
+    `).join("")
+    : `<div class="card">Aucun convoi pour le moment.</div>`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  convoyForm();
+  loadConvoys();
+});
