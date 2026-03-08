@@ -1,60 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Convois organisés</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convois organisés</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>Convois organisés</h1>
+<header>
+  <div class="brand">
+    <img src="assets/logo.png" alt="logo">
+    <div>
+      <h1>FarmOtor's Transport</h1>
+      <p>Convois organisés</p>
+    </div>
+  </div>
 
-<div id="convoys"></div>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="programme.html">Créer un convoi</a>
+    <a href="admin.html">Panel Admin</a>
+  </nav>
+</header>
 
-<script src="config.js"></script>
+<div class="container">
+  <section class="hero">
+    <span class="badge">Convois</span>
+    <h2>Convois organisés</h2>
+    <p>Tous les convois créés apparaissent ici automatiquement.</p>
+  </section>
 
-<script>
-
-const API = API_URL;
-
-async function loadConvoys(){
-
-const res = await fetch(API + "/convoys");
-
-const convoys = await res.json();
-
-const container = document.getElementById("convoys");
-
-container.innerHTML="";
-
-convoys.forEach(c=>{
-
-container.innerHTML += `
-
-<div class="card">
-
-<h3>🚛 ${c.depart} ➜ ${c.arrivee}</h3>
-
-<p>
-${c.entrepriseDepart} ➜ ${c.entrepriseArrivee}
-</p>
-
-<p>
-📅 ${c.date} | ⏰ ${c.heure} | 🖥️ ${c.serveur}
-</p>
-
+  <div id="convoys"></div>
 </div>
 
-`;
-
-});
-
-}
-
-loadConvoys();
-
-</script>
-
+<script src="config.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
