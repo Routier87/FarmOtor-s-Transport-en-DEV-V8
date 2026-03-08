@@ -1,13 +1,60 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Convois</title><link rel="stylesheet" href="style.css"></head><body><header><div class="brand"><img src="assets/logo.png" alt="logo"><div><h1>FarmOtor's Transport</h1><p>Version V8 Mods + Webhook</p></div></div><nav>
-<a href="index.html">Accueil</a>
-<a href="convois.html">Convois</a>
-<a href="candidature.html">Candidature</a>
-<a href="boutique.html">Boutique</a>
-<a href="mods.html">Mods</a>
-<a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
-<a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
-<button id="staffLoginBtn" type="button">Connexion staff</button>
-<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
-</nav></header><div class="container"><div id="staffBadge"></div>
-<section class="hero"><h2>Convois organisés</h2><p>Tous les convois créés apparaissent ici automatiquement.</p></section><div id="convoys"></div>
-</div><script src="config.js"></script><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Convois organisés</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Convois organisés</h1>
+
+<div id="convoys"></div>
+
+<script src="config.js"></script>
+
+<script>
+
+const API = API_URL;
+
+async function loadConvoys(){
+
+const res = await fetch(API + "/convoys");
+
+const convoys = await res.json();
+
+const container = document.getElementById("convoys");
+
+container.innerHTML="";
+
+convoys.forEach(c=>{
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>🚛 ${c.depart} ➜ ${c.arrivee}</h3>
+
+<p>
+${c.entrepriseDepart} ➜ ${c.entrepriseArrivee}
+</p>
+
+<p>
+📅 ${c.date} | ⏰ ${c.heure} | 🖥️ ${c.serveur}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadConvoys();
+
+</script>
+
+</body>
+</html>
