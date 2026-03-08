@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Panel Admin</title><link rel="stylesheet" href="style.css"></head><body data-staff="true"><header><div class="brand"><img src="assets/logo.png" alt="logo"><div><h1>FarmOtor's Transport</h1><p>Version V8 Mods + Webhook</p></div></div><nav>
+<a href="index.html">Accueil</a>
+<a href="convois.html">Convois</a>
+<a href="candidature.html">Candidature</a>
+<a href="boutique.html">Boutique</a>
+<a href="mods.html">Mods</a>
+<a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
+<a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
+<button id="staffLoginBtn" type="button">Connexion staff</button>
+<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
+</nav></header><div class="container"><div id="staffBadge"></div>
+<section class="hero"><h2>Panel Admin</h2><p>Page réservée au staff uniquement.</p></section>
+<div class="grid"><div class="card"><h3>Convois créés</h3><div id="adminConvoys"></div></div><div class="card"><h3>Candidatures</h3><div id="adminApps"></div></div></div>
+<div class="grid"><div class="card"><h3>Ajouter un mod</h3><form id="modForm"><input id="modName" placeholder="Nom du mod" required><input id="modUrl" placeholder="Lien de téléchargement du mod" required><button class="btn btn-blue" type="submit">Ajouter le mod</button></form></div><div class="card"><h3>Mods ajoutés</h3><div id="adminMods"></div></div></div>
+</div><script src="config.js"></script><script src="script.js"></script></body></html>

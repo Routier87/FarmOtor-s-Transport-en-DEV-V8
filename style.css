@@ -1,0 +1,24 @@
+*{box-sizing:border-box}
+:root{--card:rgba(16,25,45,.82);--line:rgba(255,255,255,.10);--text:#f8fbff;--muted:#b8c4db;--green:#2ecc71;--green2:#27ae60;--blue:#4da3ff;--red:#ef5350;--gold:#f8c44f;--purple:#7c5cff}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at top left, rgba(124,92,255,.16), transparent 32%),radial-gradient(circle at top right, rgba(77,163,255,.16), transparent 25%),linear-gradient(180deg, rgba(6,11,22,.96), rgba(11,22,48,.98)),url("assets/banniere.png") center/cover fixed no-repeat;min-height:100vh}
+header{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 28px;background:rgba(6,11,22,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px}.brand img{width:54px;height:54px;object-fit:contain;border-radius:14px;background:rgba(255,255,255,.05);padding:5px;border:1px solid var(--line)}.brand h1{margin:0;font-size:28px}.brand p{margin:0;color:var(--muted);font-size:13px}
+nav{display:flex;flex-wrap:wrap;gap:10px}
+nav a,nav button{color:white;text-decoration:none;padding:12px 16px;border-radius:14px;font-weight:bold;border:1px solid var(--line);background:linear-gradient(135deg, rgba(31,45,77,.96), rgba(24,35,61,.96));cursor:pointer;transition:.2s ease}
+nav a:hover,nav button:hover{transform:translateY(-2px);background:linear-gradient(135deg, var(--green), var(--green2));color:#08110c}
+nav .admin-link{background:linear-gradient(135deg,#5f6fff,#4b59cf)}
+.container{max-width:1220px;margin:auto;padding:28px}
+.hero,.card,.mapbox{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.28)}
+.hero{padding:30px;margin-bottom:22px}.hero h2{font-size:44px;margin:0 0 10px}.hero p{color:var(--muted);margin:0}
+.card{padding:22px;margin-bottom:18px}.card img{width:100%;max-height:300px;object-fit:cover;border-radius:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.page-actions{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 18px}
+.btn{padding:12px 18px;border:none;border-radius:14px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#08110c}.btn-red{background:linear-gradient(135deg,#ff6565,var(--red));color:white}.btn-blue{background:linear-gradient(135deg,#62b5ff,var(--blue));color:#03111e}.btn-gold{background:linear-gradient(135deg,#ffd66b,var(--gold));color:#231900}.btn-purple{background:linear-gradient(135deg,#9a83ff,var(--purple));color:white}
+input,select,textarea{width:100%;padding:14px;margin-bottom:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#0f172c;color:white}
+textarea{min-height:130px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,1fr));gap:12px}.small{font-size:14px;color:var(--muted)}.hidden{display:none!important}
+.notice{padding:16px 18px;border-radius:18px;background:rgba(248,196,79,.14);border:1px solid rgba(248,196,79,.35);color:#ffe19c;margin-bottom:16px}
+.shop-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:12px}.shop-item{background:rgba(20,31,56,.95);border:1px solid var(--line);border-radius:18px;min-height:120px;padding:10px;text-align:center;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.mod-link{display:block;padding:14px 16px;border-radius:14px;background:#132242;color:white;text-decoration:none;margin-bottom:10px;border:1px solid var(--line)}.mod-link:hover{background:#1d3568}
+.mapbox{padding:20px}.map-fallback{min-height:460px;border-radius:18px;background:linear-gradient(135deg, rgba(77,163,255,.10), rgba(124,92,255,.12)),#0f172c;border:1px dashed rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px}
+.badge{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(46,204,113,.14);border:1px solid rgba(46,204,113,.35);margin-bottom:14px}
+@media (max-width:980px){.form-grid{grid-template-columns:1fr}.shop-grid{grid-template-columns:repeat(4,1fr)}}@media (max-width:700px){header{flex-direction:column;align-items:flex-start}.hero h2{font-size:34px}.shop-grid{grid-template-columns:repeat(2,1fr)}}
