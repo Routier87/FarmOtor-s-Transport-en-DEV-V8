@@ -1,91 +1,71 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Créer un convoi</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer un convoi</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body data-staff="true">
 
-<h1>Créer un convoi</h1>
+<header>
+  <div class="brand">
+    <img src="assets/logo.png" alt="logo">
+    <div>
+      <h1>FarmOtor's Transport</h1>
+      <p>Création de convoi</p>
+    </div>
+  </div>
 
-<form id="convoyForm">
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="convois.html">Convois organisés</a>
+    <a href="admin.html">Panel Admin</a>
+  </nav>
+</header>
 
-<input id="entrepriseDepart" placeholder="Entreprise départ" required>
-<input id="depart" placeholder="Ville départ" required>
+<div class="container">
+  <section class="hero">
+    <span class="badge">Programme Convoi</span>
+    <h2>Créer un convoi</h2>
+    <p>Ajoute l’image du convoi et tous les paramètres demandés.</p>
+  </section>
 
-<input id="entrepriseArrivee" placeholder="Entreprise arrivée" required>
-<input id="arrivee" placeholder="Ville arrivée" required>
+  <div class="card">
+    <form id="convoyForm">
+      <div class="form-grid">
+        <input id="entrepriseDepart" placeholder="Entreprise départ" required>
+        <input id="depart" placeholder="Ville départ" required>
 
-<input id="date" type="date" required>
-<input id="heure" type="time" required>
+        <input id="entrepriseArrivee" placeholder="Entreprise arrivée" required>
+        <input id="arrivee" placeholder="Ville arrivée" required>
 
-<select id="serveur">
-<option>TMP</option>
-<option>SIMU1</option>
-<option>SIMU2</option>
-<option>ProMod</option>
-<option>ProMod Arcade</option>
-<option>Autre</option>
-</select>
+        <input id="date" type="date" required>
+        <input id="heure" type="time" required>
 
-<button type="submit">Créer le convoi</button>
+        <select id="serveur" required>
+          <option value="">Choisir un serveur TMP</option>
+          <option value="SIMU1">SIMU1</option>
+          <option value="SIMU2">SIMU2</option>
+          <option value="ProMod">ProMod</option>
+          <option value="ProMod Arcade">ProMod Arcade</option>
+          <option value="Autre">Autre</option>
+        </select>
 
-</form>
+        <div>
+          <label for="image" class="small">Image du convoi</label>
+          <input type="file" id="image" accept="image/*">
+        </div>
+      </div>
+
+      <div class="page-actions">
+        <button class="btn btn-blue" type="submit">Créer le convoi</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script src="config.js"></script>
-
-<script>
-
-const API = API_URL;
-
-document.getElementById("convoyForm").addEventListener("submit", async (e)=>{
-
-e.preventDefault();
-
-const convoy = {
-
-entrepriseDepart: document.getElementById("entrepriseDepart").value,
-depart: document.getElementById("depart").value,
-
-entrepriseArrivee: document.getElementById("entrepriseArrivee").value,
-arrivee: document.getElementById("arrivee").value,
-
-date: document.getElementById("date").value,
-heure: document.getElementById("heure").value,
-
-serveur: document.getElementById("serveur").value
-
-};
-
-const res = await fetch(API + "/convoys",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify(convoy)
-
-});
-
-if(res.ok){
-
-alert("Convoi créé !");
-
-window.location.href="convois.html";
-
-}else{
-
-alert("Erreur création convoi");
-
-}
-
-});
-
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
