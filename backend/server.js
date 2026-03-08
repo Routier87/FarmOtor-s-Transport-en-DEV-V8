@@ -16,6 +16,10 @@ function save(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
+app.get('/health', (req, res) => {
+  res.json({ ok: true });
+});
+
 /* =========================
    CONVOIS
 ========================= */
@@ -29,6 +33,8 @@ app.post('/convoys', async (req, res) => {
 
   const c = {
     id: Date.now(),
+    likes: 0,
+    dislikes: 0,
     ...req.body
   };
 
@@ -86,6 +92,54 @@ app.delete('/convoys/:id', (req, res) => {
 
   save('data/convoys.json', d);
   res.json({ ok: true });
+});
+
+app.post('/convoys/:id/like', (req, res) => {
+  let d = read('data/convoys.json');
+
+  d = d.map(x =>
+    x.id == req.params.id
+      ? { ...x, likes: (x.likes || 0) + 1 }
+      : x
+  );
+
+  save('data/convoys.json', d);
+  res.json({ ok: true });
+});
+
+app.post('/convoys/:id/dislike', (req, res) => {
+  let d = read('data/convoys.json');
+
+  d = d.map(x =>
+    x.id == req.params.id
+      ? { ...x, dislikes: (x.dislikes || 0) + 1 }
+      : x
+  );
+
+  save('data/convoys.json', d);
+  res.json({ ok: true });
+});
+
+/* =========================
+   INSCRIPTIONS CONVOIS
+========================= */
+
+app.get('/registrations', (req, res) => {
+  res.json(read('data/registrations.json'));
+});
+
+app.post('/registrations', (req, res) => {
+  const d = read('data/registrations.json');
+
+  const r = {
+    id: Date.now(),
+    ...req.body
+  };
+
+  d.push(r);
+  save('data/registrations.json', d);
+
+  res.json(r);
 });
 
 /* =========================
