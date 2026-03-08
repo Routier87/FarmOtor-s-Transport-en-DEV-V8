@@ -1,20 +1,54 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
 
 const app = express();
 
-app.use(express.json({ limit: '500mb' }));
 app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+const DATA_DIR = path.join(__dirname, 'data');
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 function read(file) {
-  if (!fs.existsSync(file)) fs.writeFileSync(file, '[]');
-  return JSON.parse(fs.readFileSync(file));
+  const fullPath = path.join(DATA_DIR, file);
+  if (!fs.existsSync(fullPath)) fs.writeFileSync(fullPath, '[]');
+  return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
 
 function save(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  const fullPath = path.join(DATA_DIR, file);
+  fs.writeFileSync(fullPath, JSON.stringify(data, null, 2));
 }
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, UPLOADS_DIR);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname || '').toLowerCase() || '.jpg';
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1e9) + ext);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 15 * 1024 * 1024
+  }
+});
+
+/* =========================
+   HEALTH
+========================= */
 
 app.get('/health', (req, res) => {
   res.json({ ok: true });
@@ -25,21 +59,30 @@ app.get('/health', (req, res) => {
 ========================= */
 
 app.get('/convoys', (req, res) => {
-  res.json(read('data/convoys.json'));
+  res.json(read('convoys.json'));
 });
 
-app.post('/convoys', async (req, res) => {
-  const d = read('data/convoys.json');
+app.post('/convoys', upload.single('image'), async (req, res) => {
+  const d = read('convoys.json');
+
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
   const c = {
     id: Date.now(),
     likes: 0,
     dislikes: 0,
-    ...req.body
+    depart: req.body.depart || '',
+    arrivee: req.body.arrivee || '',
+    entrepriseDepart: req.body.entrepriseDepart || '',
+    entrepriseArrivee: req.body.entrepriseArrivee || '',
+    date: req.body.date || '',
+    heure: req.body.heure || '',
+    serveur: req.body.serveur || '',
+    image: imageUrl
   };
 
   d.push(c);
-  save('data/convoys.json', d);
+  save('convoys.json', d);
 
   const webhook = process.env.DISCORD_WEBHOOK_URL;
 
@@ -73,7 +116,7 @@ app.post('/convoys', async (req, res) => {
 });
 
 app.put('/convoys/:id', (req, res) => {
-  let d = read('data/convoys.json');
+  let d = read('convoys.json');
 
   d = d.map(x =>
     x.id == req.params.id
@@ -81,21 +124,30 @@ app.put('/convoys/:id', (req, res) => {
       : x
   );
 
-  save('data/convoys.json', d);
+  save('convoys.json', d);
   res.json({ ok: true });
 });
 
 app.delete('/convoys/:id', (req, res) => {
-  let d = read('data/convoys.json');
+  let d = read('convoys.json');
+
+  const convoy = d.find(x => x.id == req.params.id);
+  if (convoy && convoy.image) {
+    const filename = convoy.image.replace('/uploads/', '');
+    const fullImagePath = path.join(UPLOADS_DIR, filename);
+    if (fs.existsSync(fullImagePath)) {
+      fs.unlinkSync(fullImagePath);
+    }
+  }
 
   d = d.filter(x => x.id != req.params.id);
+  save('convoys.json', d);
 
-  save('data/convoys.json', d);
   res.json({ ok: true });
 });
 
 app.post('/convoys/:id/like', (req, res) => {
-  let d = read('data/convoys.json');
+  let d = read('convoys.json');
 
   d = d.map(x =>
     x.id == req.params.id
@@ -103,12 +155,12 @@ app.post('/convoys/:id/like', (req, res) => {
       : x
   );
 
-  save('data/convoys.json', d);
+  save('convoys.json', d);
   res.json({ ok: true });
 });
 
 app.post('/convoys/:id/dislike', (req, res) => {
-  let d = read('data/convoys.json');
+  let d = read('convoys.json');
 
   d = d.map(x =>
     x.id == req.params.id
@@ -116,7 +168,7 @@ app.post('/convoys/:id/dislike', (req, res) => {
       : x
   );
 
-  save('data/convoys.json', d);
+  save('convoys.json', d);
   res.json({ ok: true });
 });
 
@@ -125,19 +177,20 @@ app.post('/convoys/:id/dislike', (req, res) => {
 ========================= */
 
 app.get('/registrations', (req, res) => {
-  res.json(read('data/registrations.json'));
+  res.json(read('registrations.json'));
 });
 
 app.post('/registrations', (req, res) => {
-  const d = read('data/registrations.json');
+  const d = read('registrations.json');
 
   const r = {
     id: Date.now(),
-    ...req.body
+    convoyId: req.body.convoyId || '',
+    username: req.body.username || ''
   };
 
   d.push(r);
-  save('data/registrations.json', d);
+  save('registrations.json', d);
 
   res.json(r);
 });
@@ -147,11 +200,11 @@ app.post('/registrations', (req, res) => {
 ========================= */
 
 app.get('/applications', (req, res) => {
-  res.json(read('data/apps.json'));
+  res.json(read('apps.json'));
 });
 
 app.post('/applications', (req, res) => {
-  const d = read('data/apps.json');
+  const d = read('apps.json');
 
   const a = {
     id: Date.now(),
@@ -160,13 +213,13 @@ app.post('/applications', (req, res) => {
   };
 
   d.push(a);
-  save('data/apps.json', d);
+  save('apps.json', d);
 
   res.json(a);
 });
 
 app.put('/applications/:id', (req, res) => {
-  let d = read('data/apps.json');
+  let d = read('apps.json');
 
   d = d.map(x =>
     x.id == req.params.id
@@ -174,16 +227,16 @@ app.put('/applications/:id', (req, res) => {
       : x
   );
 
-  save('data/apps.json', d);
+  save('apps.json', d);
   res.json({ ok: true });
 });
 
 app.delete('/applications/:id', (req, res) => {
-  let d = read('data/apps.json');
+  let d = read('apps.json');
 
   d = d.filter(x => x.id != req.params.id);
 
-  save('data/apps.json', d);
+  save('apps.json', d);
   res.json({ ok: true });
 });
 
@@ -192,11 +245,11 @@ app.delete('/applications/:id', (req, res) => {
 ========================= */
 
 app.get('/mods', (req, res) => {
-  res.json(read('data/mods.json'));
+  res.json(read('mods.json'));
 });
 
 app.post('/mods', (req, res) => {
-  const d = read('data/mods.json');
+  const d = read('mods.json');
 
   const m = {
     id: Date.now(),
@@ -204,23 +257,19 @@ app.post('/mods', (req, res) => {
   };
 
   d.push(m);
-  save('data/mods.json', d);
+  save('mods.json', d);
 
   res.json(m);
 });
 
 app.delete('/mods/:id', (req, res) => {
-  let d = read('data/mods.json');
+  let d = read('mods.json');
 
   d = d.filter(x => x.id != req.params.id);
 
-  save('data/mods.json', d);
+  save('mods.json', d);
   res.json({ ok: true });
 });
-
-/* =========================
-   LANCEMENT
-========================= */
 
 const PORT = process.env.PORT || 3000;
 
