@@ -64,19 +64,6 @@ function toggleStaffLinks() {
 }
 
 /* =========================
-   UTILS
-========================= */
-
-function fileToBase64(file) {
-  return new Promise((resolve) => {
-    if (!file) return resolve("");
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-/* =========================
    CONVOI FORM
 ========================= */
 
@@ -87,25 +74,23 @@ function convoyForm() {
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const img = await fileToBase64(document.getElementById("image")?.files?.[0]);
+    const formData = new FormData();
+    formData.append("depart", document.getElementById("depart").value);
+    formData.append("arrivee", document.getElementById("arrivee").value);
+    formData.append("entrepriseDepart", document.getElementById("entrepriseDepart").value);
+    formData.append("entrepriseArrivee", document.getElementById("entrepriseArrivee").value);
+    formData.append("date", document.getElementById("date").value);
+    formData.append("heure", document.getElementById("heure").value);
+    formData.append("serveur", document.getElementById("serveur").value);
 
-    const body = {
-      depart: document.getElementById("depart").value,
-      arrivee: document.getElementById("arrivee").value,
-      entrepriseDepart: document.getElementById("entrepriseDepart").value,
-      entrepriseArrivee: document.getElementById("entrepriseArrivee").value,
-      date: document.getElementById("date").value,
-      heure: document.getElementById("heure").value,
-      serveur: document.getElementById("serveur").value,
-      image: img
-    };
+    const imageFile = document.getElementById("image")?.files?.[0];
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
     const res = await fetch(API + "/convoys", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
+      body: formData
     });
 
     if (!res.ok) {
@@ -136,7 +121,7 @@ async function loadConvoys() {
     box.innerHTML = data.length
       ? data.map(c => `
         <div class="card">
-          ${c.image ? `<img src="${c.image}" alt="Image convoi">` : ""}
+          ${c.image ? `<img src="${API}${c.image}" alt="Image convoi">` : ""}
 
           <h3>🚛 ${c.depart || "-"} ➜ ${c.arrivee || "-"}</h3>
 
@@ -444,6 +429,89 @@ async function deleteMod(id) {
 }
 
 /* =========================
+   CHAUFFEURS VTC
+========================= */
+
+function driverForm() {
+  const f = document.getElementById("driverForm");
+  if (!f) return;
+
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(API + "/drivers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: document.getElementById("driverName").value,
+        role: document.getElementById("driverRole").value,
+        discord: document.getElementById("driverDiscord").value
+      })
+    });
+
+    if (!res.ok) {
+      alert("Erreur ajout chauffeur");
+      return;
+    }
+
+    alert("Chauffeur ajouté ✅");
+    f.reset();
+    loadDrivers();
+  });
+}
+
+async function loadDrivers() {
+  const list = document.getElementById("driversList");
+  const admin = document.getElementById("adminDrivers");
+
+  if (!list && !admin) return;
+
+  const r = await fetch(API + "/drivers");
+  const data = await r.json();
+
+  if (list) {
+    list.innerHTML = data.length
+      ? data.map(d => `
+        <div class="card">
+          <h3>🚚 ${d.name || "-"}</h3>
+          <p><strong>Rôle :</strong> ${d.role || "-"}</p>
+          <p><strong>Discord :</strong> ${d.discord || "-"}</p>
+        </div>
+      `).join("")
+      : `<div class="card">Aucun chauffeur pour le moment.</div>`;
+  }
+
+  if (admin) {
+    admin.innerHTML = data.length
+      ? data.map(d => `
+        <div class="card">
+          <strong>${d.name || "-"}</strong><br>
+          <span>${d.role || "-"} | ${d.discord || "-"}</span>
+          <div style="margin-top:10px;">
+            <button onclick="deleteDriver(${d.id})">Supprimer</button>
+          </div>
+        </div>
+      `).join("")
+      : `<div class="card">Aucun chauffeur ajouté.</div>`;
+  }
+}
+
+async function deleteDriver(id) {
+  const res = await fetch(API + "/drivers/" + id, {
+    method: "DELETE"
+  });
+
+  if (!res.ok) {
+    alert("Erreur suppression chauffeur");
+    return;
+  }
+
+  loadDrivers();
+}
+
+/* =========================
    INIT
 ========================= */
 
@@ -461,6 +529,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadMods();
 
   loadRegistrations();
+
+  driverForm();
+  loadDrivers();
 
   const loginBtn = document.getElementById("staffLoginBtn");
   if (loginBtn) loginBtn.onclick = loginStaff;
