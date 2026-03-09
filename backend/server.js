@@ -7,7 +7,7 @@ const multer = require('multer');
 const app = express();
 
 app.use(cors());
-app.use(express.json({ limit: '100mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -62,7 +62,7 @@ app.get('/convoys', (req, res) => {
   res.json(read('convoys.json'));
 });
 
-app.post('/convoys', upload.single('image'), async (req, res) => {
+app.post('/convoys', upload.single('image'), (req, res) => {
   const d = read('convoys.json');
 
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
@@ -84,18 +84,21 @@ app.post('/convoys', upload.single('image'), async (req, res) => {
   d.push(c);
   save('convoys.json', d);
 
+  // Réponse immédiate au site
+  res.json(c);
+
+  // Webhook Discord envoyé après, sans bloquer l'utilisateur
   const webhook = process.env.DISCORD_WEBHOOK_URL;
 
   if (webhook) {
-    try {
-      await fetch(webhook, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: 'FarmOtor Convoys',
-          content:
+    fetch(webhook, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: 'FarmOtor Convoys',
+        content:
 `🚛 **Nouveau convoi créé**
 **${c.depart || '-'} ➜ ${c.arrivee || '-'}**
 
@@ -105,14 +108,11 @@ app.post('/convoys', upload.single('image'), async (req, res) => {
 📅 **Date :** ${c.date || '-'}
 ⏰ **Heure :** ${c.heure || '-'}
 🖥️ **Serveur :** ${c.serveur || '-'}`
-        })
-      });
-    } catch (e) {
+      })
+    }).catch(e => {
       console.error('Erreur webhook Discord :', e);
-    }
+    });
   }
-
-  res.json(c);
 });
 
 app.put('/convoys/:id', (req, res) => {
