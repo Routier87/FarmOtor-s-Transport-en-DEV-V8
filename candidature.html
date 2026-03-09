@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,87 +10,63 @@
 <body>
 
 <header>
+  <div class="brand">
+    <img src="assets/logo.png" alt="logo">
+    <div>
+      <h1>FarmOtor's Transport</h1>
+      <p>Version V8 Mods + Webhook</p>
+    </div>
+  </div>
 
-<div class="brand">
-<img src="assets/logo.png" alt="logo">
-
-<div>
-<h1>FarmOtor's Transport</h1>
-<p>Version V8 Mods + Webhook</p>
-</div>
-</div>
-
-<nav>
-
-<a href="index.html">Accueil</a>
-<a href="convois.html">Convois</a>
-<a href="candidature.html">Candidature</a>
-<a href="boutique.html">Boutique</a>
-<a href="mods.html">Mods</a>
-
-<a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
-<a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
-
-<button id="staffLoginBtn" type="button">Connexion staff</button>
-<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
-
-</nav>
-
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="convois.html">Convois</a>
+    <a href="candidature.html">Candidature</a>
+    <a href="boutique.html">Boutique</a>
+    <a href="mods.html">Mods</a>
+    <a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
+    <a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
+    <button id="staffLoginBtn" type="button">Connexion staff</button>
+    <button id="staffLogoutBtn" type="button">Déconnexion staff</button>
+  </nav>
 </header>
 
-
 <div class="container">
+  <div id="staffBadge"></div>
 
-<div id="staffBadge"></div>
+  <section class="hero">
+    <h2>Candidature</h2>
+    <p>Postule pour Trucky, TrucksBook ou les deux.</p>
+  </section>
 
-<section class="hero">
-<h2>Candidature</h2>
-<p>Postule pour Trucky, TrucksBook ou les deux.</p>
-</section>
+  <div class="card">
+    <h3>Conditions pour rejoindre la VTC</h3>
 
+    <p style="margin-bottom:20px;line-height:1.6">
+      ✔ Avoir au minimum <strong>18 ans</strong><br>
+      ✔ Avoir au minimum <strong>50 heures de jeu sur Euro Truck Simulator 2</strong><br>
+      ✔ Respecter les autres conducteurs et les règles TruckersMP
+    </p>
 
-<div class="card">
+    <form id="appForm">
+      <input id="pseudo" placeholder="Pseudo Discord" required>
+      <input id="age" type="number" placeholder="Âge (18 minimum)" required>
+      <input id="heures" type="number" placeholder="Heures de jeu ETS2 (50 minimum)" required>
 
-<h3>Conditions pour rejoindre la VTC</h3>
+      <select id="plateforme">
+        <option>Trucky</option>
+        <option>TrucksBook</option>
+        <option>Les deux</option>
+      </select>
 
-<p style="margin-bottom:20px;line-height:1.6">
+      <textarea id="motivation" placeholder="Motivation"></textarea>
 
-✔ Avoir au minimum <strong>18 ans</strong><br>
-✔ Avoir au minimum <strong>50 heures de jeu sur Euro Truck Simulator 2</strong><br>
-✔ Respecter les autres conducteurs et les règles TruckersMP
-
-</p>
-
-
-<form id="appForm">
-
-<input id="pseudo" placeholder="Pseudo Discord" required>
-
-<input id="age" type="number" placeholder="Âge (18 minimum)" required>
-
-<input id="heures" type="number" placeholder="Heures de jeu ETS2 (50 minimum)" required>
-
-<select id="plateforme">
-
-<option>Trucky</option>
-<option>TrucksBook</option>
-<option>Les deux</option>
-
-</select>
-
-<textarea id="motivation" placeholder="Motivation"></textarea>
-
-<button class="btn btn-green">Envoyer candidature</button>
-
-</form>
-
+      <button class="btn btn-green" type="submit">Envoyer candidature</button>
+    </form>
+  </div>
 </div>
-
-</div>
-
 
 <script src="config.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
