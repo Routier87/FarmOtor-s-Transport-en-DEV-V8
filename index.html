@@ -61,15 +61,16 @@
   <section class="mapbox">
     <h2>Carte TruckersMP</h2>
     <div class="notice">
-      TruckersMP bloque l’affichage direct de la carte dans beaucoup d’iframes.
-      J’ai mis un accès propre vers la vraie carte officielle.
+      Si TruckersMP autorise l’intégration, la carte s’affichera ci-dessous.
+      Si elle reste vide, il faudra revenir à un bouton externe.
     </div>
 
-    <div class="map-fallback">
-      <h3>Map TruckersMP</h3>
-      <p class="small">Clique sur le bouton pour ouvrir la carte officielle sans erreur.</p>
-      <a class="btn btn-purple" href="https://map.truckersmp.com/" target="_blank">Ouvrir la carte TruckersMP</a>
-    </div>
+    <iframe
+      class="map-embed"
+      src="https://map.truckersmp.com/?embed=true"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
   </section>
 </div>
 
