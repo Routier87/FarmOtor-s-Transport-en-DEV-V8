@@ -84,10 +84,8 @@ app.post('/convoys', upload.single('image'), (req, res) => {
   d.push(c);
   save('convoys.json', d);
 
-  // Réponse immédiate au site
   res.json(c);
 
-  // Webhook Discord envoyé après, sans bloquer l'utilisateur
   const webhook = process.env.DISCORD_WEBHOOK_URL;
 
   if (webhook) {
@@ -270,6 +268,43 @@ app.delete('/mods/:id', (req, res) => {
   save('mods.json', d);
   res.json({ ok: true });
 });
+
+/* =========================
+   CHAUFFEURS VTC
+========================= */
+
+app.get('/drivers', (req, res) => {
+  res.json(read('drivers.json'));
+});
+
+app.post('/drivers', (req, res) => {
+  const d = read('drivers.json');
+
+  const driver = {
+    id: Date.now(),
+    name: req.body.name || '',
+    role: req.body.role || '',
+    discord: req.body.discord || ''
+  };
+
+  d.push(driver);
+  save('drivers.json', d);
+
+  res.json(driver);
+});
+
+app.delete('/drivers/:id', (req, res) => {
+  let d = read('drivers.json');
+
+  d = d.filter(x => x.id != req.params.id);
+
+  save('drivers.json', d);
+  res.json({ ok: true });
+});
+
+/* =========================
+   LANCEMENT
+========================= */
 
 const PORT = process.env.PORT || 3000;
 
