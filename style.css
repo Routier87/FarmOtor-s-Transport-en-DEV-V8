@@ -265,11 +265,20 @@ textarea{
   padding:20px;
 }
 
-.map-embed{
+.map-container{
   width:100%;
   height:650px;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  margin-top:15px;
+  background:#0f172c;
+}
+
+.map-embed{
+  width:100%;
+  height:100%;
   border:none;
-  border-radius:18px;
   background:#0f172c;
 }
 
@@ -324,7 +333,7 @@ textarea{
     grid-template-columns:repeat(4,1fr);
   }
 
-  .map-embed{
+  .map-container{
     height:520px;
   }
 }
@@ -343,7 +352,7 @@ textarea{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .map-embed{
+  .map-container{
     height:420px;
   }
 }
