@@ -1,76 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accueil</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
-  <div class="brand">
-    <img src="assets/logo.png" alt="logo">
-    <div>
-      <h1>FarmOtor's Transport</h1>
-      <p>Version DEV</p>
-    </div>
-  </div>
 
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="convois.html">Convois</a>
-    <a href="candidature.html">Candidature</a>
-    <a href="boutique.html">Boutique</a>
-    <a href="mods.html">Mods</a>
-    <a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
-    <a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
-    <button id="staffLoginBtn" type="button">Connexion staff</button>
-    <button id="staffLogoutBtn" type="button">Déconnexion staff</button>
-  </nav>
+<div class="brand">
+<img src="assets/logo.png" alt="logo">
+
+<div>
+<h1>FarmOtor's Transport</h1>
+<p>Version DEV</p>
+</div>
+
+</div>
+
+<nav>
+
+<a href="index.html">Accueil</a>
+<a href="convois.html">Convois</a>
+<a href="candidature.html">Candidature</a>
+<a href="boutique.html">Boutique</a>
+<a href="mods.html">Mods</a>
+
+<a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
+<a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
+
+<button id="staffLoginBtn" type="button">Connexion staff</button>
+<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
+
+</nav>
+
 </header>
 
+
 <div class="container">
-  <div id="staffBadge"></div>
 
-  <section class="hero">
-    <span class="badge">V8 complète</span>
-    <h2>Accueil FarmOtor's</h2>
-    <p>Les pages sont dans le menu. Seuls les staff voient Créer convoi et Panel Admin.</p>
-  </section>
+<div id="staffBadge"></div>
 
-  <div class="card">
-    <h3>Nos plateformes VTC</h3>
-    <p class="small">Retrouve la VTC sur Trucky et TrucksBook.</p>
+<section class="hero">
 
-    <div class="platforms-home">
-      <div class="platform-card">
-        <img src="assets/logo-trucky.png" alt="Logo Trucky" class="platform-logo">
-        <h4>Trucky</h4>
-        <a class="btn btn-blue" href="#" target="_blank">Ouvrir Trucky</a>
-      </div>
+<span class="badge">V8 complète</span>
 
-      <div class="platform-card">
-        <img src="assets/logo-trucksbook.png" alt="Logo TrucksBook" class="platform-logo">
-        <h4>TrucksBook</h4>
-        <a class="btn btn-purple" href="#" target="_blank">Ouvrir TrucksBook</a>
-      </div>
-    </div>
-  </div>
+<h2>Accueil FarmOtor's</h2>
+
+<p>
+Les pages sont dans le menu.
+Seuls les staff voient Créer convoi et Panel Admin.
+</p>
+
+</section>
+
+
+<div class="card">
+
+<h3>Nos plateformes VTC</h3>
+
+<p class="small">
+Retrouve la VTC sur Trucky et TrucksBook.
+</p>
+
+<div class="platforms-home">
+
+
+<div class="platform-card">
+
+<img src="assets/logo-trucky.png" alt="Logo Trucky" class="platform-logo">
+
+<h4>Trucky</h4>
+
+<a
+class="btn btn-blue"
+href="https://hub.truckyapp.com/vtchub"
+target="_blank">
+
+Voir la VTC sur Trucky
+
+</a>
+
+</div>
+
+
+<div class="platform-card">
+
+<img src="assets/logo-trucksbook.png" alt="Logo TrucksBook" class="platform-logo">
+
+<h4>TrucksBook</h4>
+
+<a
+class="btn btn-purple"
+href="METTRE_LE_LIEN_TRUCKSBOOK_ICI"
+target="_blank">
+
+Voir la VTC sur TrucksBook
+
+</a>
+
+</div>
+
+
+</div>
+
+</div>
+
 
 <section class="mapbox">
-  <h2>Carte TruckersMP en direct</h2>
 
-  <div class="map-container">
-    <iframe
-      src="https://map.truckersmp.com/"
-      class="map-embed"
-      loading="lazy">
-    </iframe>
-  </div>
+<h2>Carte TruckersMP en direct</h2>
+
+<div class="map-container">
+
+<iframe
+src="https://map.truckersmp.com/"
+class="map-embed"
+loading="lazy">
+</iframe>
+
+</div>
+
 </section>
+
+
+</div>
 
 <script src="config.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
