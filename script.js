@@ -271,6 +271,19 @@ function appForm() {
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const age = parseInt(document.getElementById("age").value, 10);
+    const heures = parseInt(document.getElementById("heures").value, 10);
+
+    if (age < 18) {
+      alert("❌ Il faut avoir au minimum 18 ans pour rejoindre la VTC");
+      return;
+    }
+
+    if (heures < 50) {
+      alert("❌ Il faut avoir au minimum 50 heures de jeu sur ETS2");
+      return;
+    }
+
     const res = await fetch(API + "/applications", {
       method: "POST",
       headers: {
@@ -278,7 +291,8 @@ function appForm() {
       },
       body: JSON.stringify({
         pseudo: document.getElementById("pseudo").value,
-        age: document.getElementById("age").value,
+        age: age,
+        heures: heures,
         plateforme: document.getElementById("plateforme").value,
         motivation: document.getElementById("motivation").value
       })
@@ -305,10 +319,14 @@ async function loadAdminApps() {
     ? d.map(x => `
       <div class="card">
         <strong>${x.pseudo || "-"}</strong><br>
-        <span>${x.plateforme || "-"} | ${x.age || "-"} ans | Statut : ${x.status || "attente"}</span>
-        <p>${x.motivation || ""}</p>
+        <span><strong>Âge :</strong> ${x.age || "-"} ans</span><br>
+        <span><strong>Heures ETS2 :</strong> ${x.heures || "-"} h</span><br>
+        <span><strong>Plateforme :</strong> ${x.plateforme || "-"}</span><br>
+        <span><strong>Statut :</strong> ${x.status || "attente"}</span>
+        <p style="margin-top:10px;">${x.motivation || ""}</p>
+
         <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button onclick="updateApp(${x.id}, 'accepte')">Accepter</button>
+          <button onclick="updateApp(${x.id}, 'accepte')">Valider</button>
           <button onclick="updateApp(${x.id}, 'refuse')">Refuser</button>
           <button onclick="deleteApp(${x.id})">Supprimer</button>
         </div>
