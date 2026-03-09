@@ -70,6 +70,24 @@
     <h3>Inscriptions aux convois</h3>
     <div id="adminRegistrations"></div>
   </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Ajouter un chauffeur</h3>
+      <form id="driverForm">
+        <input id="driverName" placeholder="Nom du chauffeur" required>
+        <input id="driverRole" placeholder="Rôle / grade (ex: Conducteur)" required>
+        <input id="driverDiscord" placeholder="Pseudo Discord" required>
+        <button class="btn btn-green" type="submit">Ajouter le chauffeur</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Chauffeurs ajoutés</h3>
+      <div id="adminDrivers"></div>
+    </div>
+  </div>
+
 </div>
 
 <script src="config.js"></script>
