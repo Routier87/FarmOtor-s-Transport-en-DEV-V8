@@ -1,93 +1,121 @@
-const express = require("express")
-const fs = require("fs")
-const path = require("path")
-const cors = require("cors")
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const cors = require("cors");
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-const DATA = "./data"
+const DATA = path.join(__dirname, "data");
+
+if (!fs.existsSync(DATA)) {
+  fs.mkdirSync(DATA, { recursive: true });
+}
 
 function read(file) {
-if (!fs.existsSync(`${DATA}/${file}`)) fs.writeFileSync(`${DATA}/${file}`, "[]")
-return JSON.parse(fs.readFileSync(`${DATA}/${file}`))
+  const fullPath = path.join(DATA, file);
+  if (!fs.existsSync(fullPath)) {
+    fs.writeFileSync(fullPath, "[]", "utf8");
+  }
+  return JSON.parse(fs.readFileSync(fullPath, "utf8"));
 }
 
-function save(file,data) {
-fs.writeFileSync(`${DATA}/${file}`,JSON.stringify(data,null,2))
+function save(file, data) {
+  const fullPath = path.join(DATA, file);
+  fs.writeFileSync(fullPath, JSON.stringify(data, null, 2), "utf8");
 }
 
-app.get("/convoys",(req,res)=>{
-res.json(read("convoys.json"))
-})
+/* =========================
+   CONVOIS
+========================= */
 
-app.post("/convoys",(req,res)=>{
-let data=read("convoys.json")
+app.get("/convoys", (req, res) => {
+  res.json(read("convoys.json"));
+});
 
-const convoy={
-id:Date.now(),
-depart:req.body.depart,
-arrivee:req.body.arrivee,
-date:req.body.date,
-heure:req.body.heure
-}
+app.post("/convoys", (req, res) => {
+  const data = read("convoys.json");
 
-data.push(convoy)
+  const convoy = {
+    id: Date.now(),
+    depart: req.body.depart || "",
+    arrivee: req.body.arrivee || "",
+    date: req.body.date || "",
+    heure: req.body.heure || ""
+  };
 
-save("convoys.json",data)
+  data.push(convoy);
+  save("convoys.json", data);
 
-res.json(convoy)
-})
+  res.json(convoy);
+});
 
-app.get("/applications",(req,res)=>{
-res.json(read("apps.json"))
-})
+/* =========================
+   CANDIDATURES
+========================= */
 
-app.post("/applications",(req,res)=>{
-let data=read("apps.json")
+app.get("/applications", (req, res) => {
+  res.json(read("apps.json"));
+});
 
-const appData={
-id:Date.now(),
-pseudo:req.body.pseudo,
-age:req.body.age,
-heures:req.body.heures,
-motivation:req.body.motivation,
-status:"attente"
-}
+app.post("/applications", (req, res) => {
+  const data = read("apps.json");
 
-data.push(appData)
+  const appData = {
+    id: Date.now(),
+    pseudo: req.body.pseudo || "",
+    age: req.body.age || "",
+    heures: req.body.heures || "",
+    motivation: req.body.motivation || "",
+    status: "attente"
+  };
 
-save("apps.json",data)
+  data.push(appData);
+  save("apps.json", data);
 
-res.json(appData)
-})
+  res.json(appData);
+});
 
-app.get("/drivers",(req,res)=>{
-res.json(read("drivers.json"))
-})
+/* =========================
+   CHAUFFEURS
+========================= */
 
-app.post("/drivers",(req,res)=>{
-let data=read("drivers.json")
+app.get("/drivers", (req, res) => {
+  res.json(read("drivers.json"));
+});
 
-const driver={
-id:Date.now(),
-name:req.body.name,
-role:req.body.role,
-discord:req.body.discord,
-since:req.body.since
-}
+app.post("/drivers", (req, res) => {
+  const data = read("drivers.json");
 
-data.push(driver)
+  const driver = {
+    id: Date.now(),
+    name: req.body.name || "",
+    role: req.body.role || "",
+    discord: req.body.discord || "",
+    since: req.body.since || ""
+  };
 
-save("drivers.json",data)
+  data.push(driver);
+  save("drivers.json", data);
 
-res.json(driver)
-})
+  res.json(driver);
+});
 
-const PORT=process.env.PORT||3000
+app.delete("/drivers/:id", (req, res) => {
+  let data = read("drivers.json");
+  data = data.filter((x) => String(x.id) !== String(req.params.id));
+  save("drivers.json", data);
+  res.json({ ok: true });
+});
 
-app.listen(PORT,()=>{
-console.log("Server running on "+PORT)
-})
+/* =========================
+   START
+========================= */
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running on " + PORT);
+});
