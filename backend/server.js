@@ -41,22 +41,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: {
-    fileSize: 15 * 1024 * 1024
-  }
+  limits: { fileSize: 15 * 1024 * 1024 }
 });
-
-/* =========================
-   HEALTH
-========================= */
 
 app.get('/health', (req, res) => {
   res.json({ ok: true });
 });
 
-/* =========================
-   CONVOIS
-========================= */
+/* CONVOIS */
 
 app.get('/convoys', (req, res) => {
   res.json(read('convoys.json'));
@@ -64,7 +56,6 @@ app.get('/convoys', (req, res) => {
 
 app.post('/convoys', upload.single('image'), (req, res) => {
   const d = read('convoys.json');
-
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
   const c = {
@@ -83,19 +74,13 @@ app.post('/convoys', upload.single('image'), (req, res) => {
 
   d.push(c);
   save('convoys.json', d);
-
-  // réponse immédiate
   res.json(c);
 
-  // webhook Discord en arrière-plan
   const webhook = process.env.DISCORD_WEBHOOK_URL;
-
   if (webhook) {
     fetch(webhook, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: 'FarmOtor Convoys',
         content:
@@ -109,21 +94,13 @@ app.post('/convoys', upload.single('image'), (req, res) => {
 ⏰ **Heure :** ${c.heure || '-'}
 🖥️ **Serveur :** ${c.serveur || '-'}`
       })
-    }).catch(e => {
-      console.error('Erreur webhook Discord :', e);
-    });
+    }).catch(e => console.error('Erreur webhook Discord :', e));
   }
 });
 
 app.put('/convoys/:id', (req, res) => {
   let d = read('convoys.json');
-
-  d = d.map(x =>
-    x.id == req.params.id
-      ? { ...x, ...req.body }
-      : x
-  );
-
+  d = d.map(x => x.id == req.params.id ? { ...x, ...req.body } : x);
   save('convoys.json', d);
   res.json({ ok: true });
 });
@@ -135,46 +112,29 @@ app.delete('/convoys/:id', (req, res) => {
   if (convoy && convoy.image) {
     const filename = convoy.image.replace('/uploads/', '');
     const fullImagePath = path.join(UPLOADS_DIR, filename);
-    if (fs.existsSync(fullImagePath)) {
-      fs.unlinkSync(fullImagePath);
-    }
+    if (fs.existsSync(fullImagePath)) fs.unlinkSync(fullImagePath);
   }
 
   d = d.filter(x => x.id != req.params.id);
   save('convoys.json', d);
-
   res.json({ ok: true });
 });
 
 app.post('/convoys/:id/like', (req, res) => {
   let d = read('convoys.json');
-
-  d = d.map(x =>
-    x.id == req.params.id
-      ? { ...x, likes: (x.likes || 0) + 1 }
-      : x
-  );
-
+  d = d.map(x => x.id == req.params.id ? { ...x, likes: (x.likes || 0) + 1 } : x);
   save('convoys.json', d);
   res.json({ ok: true });
 });
 
 app.post('/convoys/:id/dislike', (req, res) => {
   let d = read('convoys.json');
-
-  d = d.map(x =>
-    x.id == req.params.id
-      ? { ...x, dislikes: (x.dislikes || 0) + 1 }
-      : x
-  );
-
+  d = d.map(x => x.id == req.params.id ? { ...x, dislikes: (x.dislikes || 0) + 1 } : x);
   save('convoys.json', d);
   res.json({ ok: true });
 });
 
-/* =========================
-   INSCRIPTIONS CONVOIS
-========================= */
+/* INSCRIPTIONS */
 
 app.get('/registrations', (req, res) => {
   res.json(read('registrations.json'));
@@ -182,22 +142,17 @@ app.get('/registrations', (req, res) => {
 
 app.post('/registrations', (req, res) => {
   const d = read('registrations.json');
-
   const r = {
     id: Date.now(),
     convoyId: req.body.convoyId || '',
     username: req.body.username || ''
   };
-
   d.push(r);
   save('registrations.json', d);
-
   res.json(r);
 });
 
-/* =========================
-   CANDIDATURES
-========================= */
+/* CANDIDATURES */
 
 app.get('/applications', (req, res) => {
   res.json(read('apps.json'));
@@ -205,7 +160,6 @@ app.get('/applications', (req, res) => {
 
 app.post('/applications', (req, res) => {
   const d = read('apps.json');
-
   const a = {
     id: Date.now(),
     status: 'attente',
@@ -215,38 +169,26 @@ app.post('/applications', (req, res) => {
     plateforme: req.body.plateforme || '',
     motivation: req.body.motivation || ''
   };
-
   d.push(a);
   save('apps.json', d);
-
   res.json(a);
 });
 
 app.put('/applications/:id', (req, res) => {
   let d = read('apps.json');
-
-  d = d.map(x =>
-    x.id == req.params.id
-      ? { ...x, status: req.body.status }
-      : x
-  );
-
+  d = d.map(x => x.id == req.params.id ? { ...x, status: req.body.status } : x);
   save('apps.json', d);
   res.json({ ok: true });
 });
 
 app.delete('/applications/:id', (req, res) => {
   let d = read('apps.json');
-
   d = d.filter(x => x.id != req.params.id);
-
   save('apps.json', d);
   res.json({ ok: true });
 });
 
-/* =========================
-   MODS
-========================= */
+/* MODS */
 
 app.get('/mods', (req, res) => {
   res.json(read('mods.json'));
@@ -254,31 +196,24 @@ app.get('/mods', (req, res) => {
 
 app.post('/mods', (req, res) => {
   const d = read('mods.json');
-
   const m = {
     id: Date.now(),
     name: req.body.name || '',
     url: req.body.url || ''
   };
-
   d.push(m);
   save('mods.json', d);
-
   res.json(m);
 });
 
 app.delete('/mods/:id', (req, res) => {
   let d = read('mods.json');
-
   d = d.filter(x => x.id != req.params.id);
-
   save('mods.json', d);
   res.json({ ok: true });
 });
 
-/* =========================
-   CHAUFFEURS VTC
-========================= */
+/* CHAUFFEURS */
 
 app.get('/drivers', (req, res) => {
   res.json(read('drivers.json'));
@@ -286,7 +221,6 @@ app.get('/drivers', (req, res) => {
 
 app.post('/drivers', (req, res) => {
   const d = read('drivers.json');
-
   const driver = {
     id: Date.now(),
     name: req.body.name || '',
@@ -294,28 +228,19 @@ app.post('/drivers', (req, res) => {
     discord: req.body.discord || '',
     since: req.body.since || ''
   };
-
   d.push(driver);
   save('drivers.json', d);
-
   res.json(driver);
 });
 
 app.delete('/drivers/:id', (req, res) => {
   let d = read('drivers.json');
-
   d = d.filter(x => x.id != req.params.id);
-
   save('drivers.json', d);
   res.json({ ok: true });
 });
 
-/* =========================
-   LANCEMENT
-========================= */
-
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log('Server running on ' + PORT);
 });
