@@ -84,8 +84,10 @@ app.post('/convoys', upload.single('image'), (req, res) => {
   d.push(c);
   save('convoys.json', d);
 
+  // réponse immédiate
   res.json(c);
 
+  // webhook Discord en arrière-plan
   const webhook = process.env.DISCORD_WEBHOOK_URL;
 
   if (webhook) {
@@ -207,7 +209,11 @@ app.post('/applications', (req, res) => {
   const a = {
     id: Date.now(),
     status: 'attente',
-    ...req.body
+    pseudo: req.body.pseudo || '',
+    age: req.body.age || '',
+    heures: req.body.heures || '',
+    plateforme: req.body.plateforme || '',
+    motivation: req.body.motivation || ''
   };
 
   d.push(a);
@@ -251,7 +257,8 @@ app.post('/mods', (req, res) => {
 
   const m = {
     id: Date.now(),
-    ...req.body
+    name: req.body.name || '',
+    url: req.body.url || ''
   };
 
   d.push(m);
@@ -284,7 +291,8 @@ app.post('/drivers', (req, res) => {
     id: Date.now(),
     name: req.body.name || '',
     role: req.body.role || '',
-    discord: req.body.discord || ''
+    discord: req.body.discord || '',
+    since: req.body.since || ''
   };
 
   d.push(driver);
