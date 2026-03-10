@@ -1,96 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Admin</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body data-staff="true">
 
 <header>
-  <div class="brand">
-    <img src="assets/logo.png" alt="logo">
-    <div>
-      <h1>FarmOtor's Transport</h1>
-      <p>Version V8 Mods + Webhook</p>
-    </div>
-  </div>
 
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="convois.html">Convois</a>
-    <a href="candidature.html">Candidature</a>
-    <a href="boutique.html">Boutique</a>
-    <a href="mods.html">Mods</a>
-    <a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
-    <a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
-    <button id="staffLoginBtn" type="button">Connexion staff</button>
-    <button id="staffLogoutBtn" type="button">Déconnexion staff</button>
-  </nav>
+<div class="brand">
+
+<img src="assets/logo.png">
+
+<div>
+<h1>FarmOtor's Transport</h1>
+<p>Panel administration</p>
+</div>
+
+</div>
+
+<nav>
+
+<a href="index.html">Accueil</a>
+<a href="convois.html">Convois</a>
+<a href="candidature.html">Candidature</a>
+<a href="mods.html">Mods</a>
+
+<button id="staffLoginBtn">Connexion staff</button>
+<button id="staffLogoutBtn">Déconnexion staff</button>
+
+</nav>
+
 </header>
 
+
 <div class="container">
-  <div id="staffBadge"></div>
 
-  <section class="hero">
-    <h2>Panel Admin</h2>
-    <p>Page réservée au staff uniquement.</p>
-  </section>
+<div id="staffBadge"></div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>Convois créés</h3>
-      <div id="adminConvoys"></div>
-    </div>
+<section class="hero">
 
-    <div class="card">
-      <h3>Candidatures reçues</h3>
-      <div id="adminApps"></div>
-    </div>
-  </div>
+<h2>Panel Admin</h2>
+<p>Gestion complète du site</p>
 
-  <div class="grid">
-    <div class="card">
-      <h3>Ajouter un mod</h3>
-      <form id="modForm">
-        <input id="modName" placeholder="Nom du mod" required>
-        <input id="modUrl" placeholder="Lien de téléchargement du mod" required>
-        <button class="btn btn-blue" type="submit">Ajouter le mod</button>
-      </form>
-    </div>
+</section>
 
-    <div class="card">
-      <h3>Mods ajoutés</h3>
-      <div id="adminMods"></div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h3>Inscriptions aux convois</h3>
-    <div id="adminRegistrations"></div>
-  </div>
+<div class="grid">
 
-  <div class="grid">
-    <div class="card">
-      <h3>Ajouter un chauffeur</h3>
-      <form id="driverForm">
-        <input id="driverName" placeholder="Nom du chauffeur" required>
-        <input id="driverRole" placeholder="Rôle / grade (ex: Conducteur)" required>
-        <input id="driverDiscord" placeholder="Pseudo Discord" required>
-        <button class="btn btn-green" type="submit">Ajouter le chauffeur</button>
-      </form>
-    </div>
+<div class="card">
 
-    <div class="card">
-      <h3>Chauffeurs ajoutés</h3>
-      <div id="adminDrivers"></div>
-    </div>
-  </div>
+<h3>Ajouter un chauffeur</h3>
+
+<form id="driverForm">
+
+<input id="driverName" placeholder="Nom chauffeur" required>
+
+<select id="driverRole">
+
+<option value="Patron">Patron</option>
+<option value="Co-patron">Co-patron</option>
+<option value="Manager">Manager</option>
+<option value="Conducteur niveau 1">Conducteur niveau 1</option>
+<option value="Conducteur niveau 2">Conducteur niveau 2</option>
+<option value="Conducteur niveau 3">Conducteur niveau 3</option>
+
+</select>
+
+<input id="driverDiscord" placeholder="Pseudo Discord" required>
+
+<input id="driverSince" placeholder="Depuis combien de temps ?" required>
+
+<button class="btn btn-green">Ajouter chauffeur</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<h3>Chauffeurs ajoutés</h3>
+
+<div id="adminDrivers"></div>
+
+</div>
+
+</div>
 
 </div>
 
 <script src="config.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
