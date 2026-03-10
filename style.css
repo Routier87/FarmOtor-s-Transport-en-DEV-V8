@@ -132,11 +132,13 @@ nav .admin-link{
 }
 
 .card img{
-  width:100%;
-  max-height:300px;
-  object-fit:cover;
-  border-radius:16px;
-  margin-bottom:14px;
+width:100%;
+height:auto;
+max-height:400px;
+object-fit:contain;
+border-radius:16px;
+background:#0f172c;
+padding:6px;
 }
 
 .grid{
