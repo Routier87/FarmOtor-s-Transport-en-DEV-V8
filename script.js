@@ -1,4 +1,4 @@
-const API = https://farmotor-s-transport-en-dev-v8.onrender.com;
+const API = API_URL;
 
 /* =========================
    STAFF
@@ -61,7 +61,7 @@ function toggleStaffLinks() {
 }
 
 /* =========================
-   CONVOI FORM
+   CONVOIS
 ========================= */
 
 function convoyForm() {
@@ -81,9 +81,7 @@ function convoyForm() {
     formData.append("serveur", document.getElementById("serveur").value);
 
     const imageFile = document.getElementById("image")?.files?.[0];
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
+    if (imageFile) formData.append("image", imageFile);
 
     const res = await fetch(API + "/convoys", {
       method: "POST",
@@ -101,14 +99,9 @@ function convoyForm() {
   });
 }
 
-/* =========================
-   CONVOIS HTML
-========================= */
-
 async function loadConvoys() {
   const box = document.getElementById("convoys");
   const adminBox = document.getElementById("adminConvoys");
-
   if (!box && !adminBox) return;
 
   const r = await fetch(API + "/convoys");
@@ -119,9 +112,7 @@ async function loadConvoys() {
       ? data.map(c => `
         <div class="card">
           ${c.image ? `<img src="${API}${c.image}" alt="Image convoi">` : ""}
-
           <h3>🚛 ${c.depart || "-"} ➜ ${c.arrivee || "-"}</h3>
-
           <p><strong>📅 Date :</strong> ${c.date || "-"}</p>
           <p><strong>⏰ Heure :</strong> ${c.heure || "-"}</p>
           <p><strong>🖥️ Serveur :</strong> ${c.serveur || "-"}</p>
@@ -129,16 +120,12 @@ async function loadConvoys() {
           <p><strong>🏢 Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</p>
           <p><strong>🌍 Ville départ :</strong> ${c.depart || "-"}</p>
           <p><strong>🌍 Ville arrivée :</strong> ${c.arrivee || "-"}</p>
-
           <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
             <button onclick="likeConvoy(${c.id})">👍</button>
             <button onclick="dislikeConvoy(${c.id})">👎</button>
             <button onclick="registerConvoy(${c.id})">S'inscrire</button>
           </div>
-
-          <p style="margin-top:10px;">
-            👍 ${c.likes || 0} | 👎 ${c.dislikes || 0}
-          </p>
+          <p style="margin-top:10px;">👍 ${c.likes || 0} | 👎 ${c.dislikes || 0}</p>
         </div>
       `).join("")
       : `<div class="card">Aucun convoi pour le moment.</div>`;
@@ -150,7 +137,7 @@ async function loadConvoys() {
         <div class="card">
           <strong>${c.depart || "-"} ➜ ${c.arrivee || "-"}</strong><br>
           <span>${c.date || "-"} | ${c.heure || "-"} | ${c.serveur || "-"}</span>
-          <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="margin-top:10px;">
             <button onclick="deleteConvoy(${c.id})">Supprimer</button>
           </div>
         </div>
@@ -161,19 +148,13 @@ async function loadConvoys() {
 
 async function likeConvoy(id) {
   const res = await fetch(API + "/convoys/" + id + "/like", { method: "POST" });
-  if (!res.ok) {
-    alert("Erreur like");
-    return;
-  }
+  if (!res.ok) return alert("Erreur like");
   loadConvoys();
 }
 
 async function dislikeConvoy(id) {
   const res = await fetch(API + "/convoys/" + id + "/dislike", { method: "POST" });
-  if (!res.ok) {
-    alert("Erreur dislike");
-    return;
-  }
+  if (!res.ok) return alert("Erreur dislike");
   loadConvoys();
 }
 
@@ -187,42 +168,14 @@ async function registerConvoy(convoyId) {
     body: JSON.stringify({ convoyId, username })
   });
 
-  if (!res.ok) {
-    alert("Erreur inscription");
-    return;
-  }
-
+  if (!res.ok) return alert("Erreur inscription");
   alert("Inscription envoyée ✅");
 }
 
 async function deleteConvoy(id) {
   const res = await fetch(API + "/convoys/" + id, { method: "DELETE" });
-  if (!res.ok) {
-    alert("Erreur suppression convoi");
-    return;
-  }
+  if (!res.ok) return alert("Erreur suppression convoi");
   loadConvoys();
-}
-
-/* =========================
-   ADMIN REGISTRATIONS
-========================= */
-
-async function loadRegistrations() {
-  const box = document.getElementById("adminRegistrations");
-  if (!box) return;
-
-  const r = await fetch(API + "/registrations");
-  const data = await r.json();
-
-  box.innerHTML = data.length
-    ? data.map(x => `
-      <div class="card">
-        <strong>${x.username || "-"}</strong><br>
-        <span>Convoi ID : ${x.convoyId || "-"}</span>
-      </div>
-    `).join("")
-    : `<div class="card">Aucune inscription.</div>`;
 }
 
 /* =========================
@@ -239,33 +192,22 @@ function appForm() {
     const age = parseInt(document.getElementById("age").value, 10);
     const heures = parseInt(document.getElementById("heures").value, 10);
 
-    if (age < 18) {
-      alert("❌ Il faut avoir au minimum 18 ans pour rejoindre la VTC");
-      return;
-    }
-
-    if (heures < 50) {
-      alert("❌ Il faut avoir au minimum 50 heures de jeu sur ETS2");
-      return;
-    }
+    if (age < 18) return alert("❌ Il faut avoir au minimum 18 ans");
+    if (heures < 50) return alert("❌ Il faut avoir au minimum 50 heures ETS2");
 
     const res = await fetch(API + "/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         pseudo: document.getElementById("pseudo").value,
-        age: age,
-        heures: heures,
+        age,
+        heures,
         plateforme: document.getElementById("plateforme").value,
         motivation: document.getElementById("motivation").value
       })
     });
 
-    if (!res.ok) {
-      alert("Erreur envoi candidature");
-      return;
-    }
-
+    if (!res.ok) return alert("Erreur envoi candidature");
     alert("Candidature envoyée ✅");
     f.reset();
   });
@@ -287,7 +229,6 @@ async function loadAdminApps() {
         <span><strong>Plateforme :</strong> ${x.plateforme || "-"}</span><br>
         <span><strong>Statut :</strong> ${x.status || "attente"}</span>
         <p style="margin-top:10px;">${x.motivation || ""}</p>
-
         <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
           <button onclick="updateApp(${x.id}, 'accepte')">Valider</button>
           <button onclick="updateApp(${x.id}, 'refuse')">Refuser</button>
@@ -304,21 +245,13 @@ async function updateApp(id, status) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status })
   });
-
-  if (!res.ok) {
-    alert("Erreur modification candidature");
-    return;
-  }
-
+  if (!res.ok) return alert("Erreur modification candidature");
   loadAdminApps();
 }
 
 async function deleteApp(id) {
   const res = await fetch(API + "/applications/" + id, { method: "DELETE" });
-  if (!res.ok) {
-    alert("Erreur suppression candidature");
-    return;
-  }
+  if (!res.ok) return alert("Erreur suppression candidature");
   loadAdminApps();
 }
 
@@ -342,11 +275,7 @@ function modForm() {
       })
     });
 
-    if (!res.ok) {
-      alert("Erreur ajout mod");
-      return;
-    }
-
+    if (!res.ok) return alert("Erreur ajout mod");
     alert("Mod ajouté ✅");
     f.reset();
     loadMods();
@@ -356,7 +285,6 @@ function modForm() {
 async function loadMods() {
   const list = document.getElementById("modsList");
   const admin = document.getElementById("adminMods");
-
   if (!list && !admin) return;
 
   const r = await fetch(API + "/mods");
@@ -364,9 +292,7 @@ async function loadMods() {
 
   if (list) {
     list.innerHTML = data.length
-      ? data.map(m => `
-        <a class="mod-link" href="${m.url}" target="_blank">${m.name}</a>
-      `).join("")
+      ? data.map(m => `<a class="mod-link" href="${m.url}" target="_blank">${m.name}</a>`).join("")
       : `<div class="card">Aucun mod disponible.</div>`;
   }
 
@@ -387,15 +313,33 @@ async function loadMods() {
 
 async function deleteMod(id) {
   const res = await fetch(API + "/mods/" + id, { method: "DELETE" });
-  if (!res.ok) {
-    alert("Erreur suppression mod");
-    return;
-  }
+  if (!res.ok) return alert("Erreur suppression mod");
   loadMods();
 }
 
 /* =========================
-   CHAUFFEURS VTC
+   INSCRIPTIONS CONVOIS
+========================= */
+
+async function loadRegistrations() {
+  const box = document.getElementById("adminRegistrations");
+  if (!box) return;
+
+  const r = await fetch(API + "/registrations");
+  const data = await r.json();
+
+  box.innerHTML = data.length
+    ? data.map(x => `
+      <div class="card">
+        <strong>${x.username || "-"}</strong><br>
+        <span>Convoi ID : ${x.convoyId || "-"}</span>
+      </div>
+    `).join("")
+    : `<div class="card">Aucune inscription.</div>`;
+}
+
+/* =========================
+   CHAUFFEURS
 ========================= */
 
 function driverForm() {
@@ -416,11 +360,7 @@ function driverForm() {
       })
     });
 
-    if (!res.ok) {
-      alert("Erreur ajout chauffeur");
-      return;
-    }
-
+    if (!res.ok) return alert("Erreur ajout chauffeur");
     alert("Chauffeur ajouté ✅");
     f.reset();
     loadDrivers();
@@ -430,7 +370,6 @@ function driverForm() {
 async function loadDrivers() {
   const list = document.getElementById("driversList");
   const admin = document.getElementById("adminDrivers");
-
   if (!list && !admin) return;
 
   const r = await fetch(API + "/drivers");
@@ -468,10 +407,7 @@ async function loadDrivers() {
 
 async function deleteDriver(id) {
   const res = await fetch(API + "/drivers/" + id, { method: "DELETE" });
-  if (!res.ok) {
-    alert("Erreur suppression chauffeur");
-    return;
-  }
+  if (!res.ok) return alert("Erreur suppression chauffeur");
   loadDrivers();
 }
 
