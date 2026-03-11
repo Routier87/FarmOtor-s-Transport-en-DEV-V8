@@ -357,4 +357,17 @@ textarea{
   .map-container{
     height:420px;
   }
+
+  .convoy-image{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  max-height:600px;
+  object-fit:contain;
+  border-radius:16px;
+  background:#0f172c;
+  padding:6px;
+  margin-bottom:14px;
+  }
 }
