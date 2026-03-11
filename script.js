@@ -112,7 +112,7 @@ function adminConvoyForm() {
         return;
       }
 
-      alert("Convoi créé ✅");
+      alert("Convoi envoyé avec succès ✅");
       form.reset();
       await loadConvoys();
     } catch (err) {
@@ -143,7 +143,6 @@ async function loadConvoys() {
         ? data.map(c => `
           <div class="card">
             ${c.image ? `<img class="convoy-image" src="${API + c.image}" alt="Image convoi">` : ""}
-
             <h3>🚛 ${c.depart || "-"} ➜ ${c.arrivee || "-"}</h3>
             <p><strong>🏢 Entreprise départ :</strong> ${c.entrepriseDepart || "-"}</p>
             <p><strong>🏢 Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</p>
@@ -160,15 +159,13 @@ async function loadConvoys() {
         ? data.map(c => `
           <div class="card">
             ${c.image ? `<img class="convoy-image" src="${API + c.image}" alt="Image convoi">` : ""}
-
             <strong>${c.depart || "-"} ➜ ${c.arrivee || "-"}</strong><br>
             <span><strong>Entreprise départ :</strong> ${c.entrepriseDepart || "-"}</span><br>
             <span><strong>Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</span><br>
             <span><strong>Date :</strong> ${c.date || "-"}</span><br>
             <span><strong>Heure :</strong> ${c.heure || "-"}</span><br>
             <span><strong>Serveur :</strong> ${c.serveur || "-"}</span><br>
-
-            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:10px;">
               <button class="btn btn-red" onclick="deleteConvoy(${c.id})">Supprimer</button>
             </div>
           </div>
@@ -284,7 +281,6 @@ async function loadDrivers() {
             <span><strong>Grade :</strong> ${d.role || "-"}</span><br>
             <span><strong>Discord :</strong> ${d.discord || "-"}</span><br>
             <span><strong>Depuis :</strong> ${d.since || "-"}</span><br>
-
             <div style="margin-top:10px;">
               <button class="btn btn-red" onclick="deleteDriver(${d.id})">Supprimer</button>
             </div>
