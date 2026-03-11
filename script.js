@@ -180,6 +180,130 @@ async function deleteDriver(id) {
 }
 
 /* =========================
+   CONVOIS
+========================= */
+
+function adminConvoyForm() {
+  const form = document.getElementById("adminConvoyForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("entrepriseDepart", document.getElementById("entrepriseDepart").value.trim());
+    formData.append("depart", document.getElementById("depart").value.trim());
+    formData.append("entrepriseArrivee", document.getElementById("entrepriseArrivee").value.trim());
+    formData.append("arrivee", document.getElementById("arrivee").value.trim());
+    formData.append("date", document.getElementById("date").value);
+    formData.append("heure", document.getElementById("heure").value);
+    formData.append("serveur", document.getElementById("serveur").value);
+
+    const imageFile = document.getElementById("convoyImage")?.files?.[0];
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    try {
+      const res = await fetch(API + "/convoys", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!res.ok) {
+        alert("Erreur création convoi");
+        return;
+      }
+
+      alert("Convoi créé ✅");
+      form.reset();
+      await loadConvoys();
+    } catch (err) {
+      console.error(err);
+      alert("Erreur serveur création convoi");
+    }
+  });
+}
+
+async function loadConvoys() {
+  const box = document.getElementById("convoys");
+  const adminBox = document.getElementById("adminConvoys");
+
+  if (!box && !adminBox) return;
+
+  try {
+    const res = await fetch(API + "/convoys");
+    if (!res.ok) {
+      if (box) box.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
+      if (adminBox) adminBox.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
+      return;
+    }
+
+    const data = await res.json();
+
+    if (box) {
+      box.innerHTML = data.length
+        ? data.map(c => `
+          <div class="card">
+            ${c.image ? `<img class="convoy-image" src="${API + c.image}" alt="Image convoi">` : ""}
+
+            <h3>🚛 ${c.depart || "-"} ➜ ${c.arrivee || "-"}</h3>
+            <p><strong>🏢 Entreprise départ :</strong> ${c.entrepriseDepart || "-"}</p>
+            <p><strong>🏢 Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</p>
+            <p><strong>📅 Date :</strong> ${c.date || "-"}</p>
+            <p><strong>⏰ Heure :</strong> ${c.heure || "-"}</p>
+            <p><strong>🖥️ Serveur :</strong> ${c.serveur || "-"}</p>
+          </div>
+        `).join("")
+        : `<div class="card">Aucun convoi pour le moment.</div>`;
+    }
+
+    if (adminBox) {
+      adminBox.innerHTML = data.length
+        ? data.map(c => `
+          <div class="card">
+            ${c.image ? `<img class="convoy-image" src="${API + c.image}" alt="Image convoi">` : ""}
+
+            <strong>${c.depart || "-"} ➜ ${c.arrivee || "-"}</strong><br>
+            <span><strong>Entreprise départ :</strong> ${c.entrepriseDepart || "-"}</span><br>
+            <span><strong>Entreprise arrivée :</strong> ${c.entrepriseArrivee || "-"}</span><br>
+            <span><strong>Date :</strong> ${c.date || "-"}</span><br>
+            <span><strong>Heure :</strong> ${c.heure || "-"}</span><br>
+            <span><strong>Serveur :</strong> ${c.serveur || "-"}</span><br>
+
+            <div style="margin-top:10px;">
+              <button onclick="deleteConvoy(${c.id})">Supprimer</button>
+            </div>
+          </div>
+        `).join("")
+        : `<div class="card">Aucun convoi créé.</div>`;
+    }
+  } catch (err) {
+    console.error(err);
+    if (box) box.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
+    if (adminBox) adminBox.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
+  }
+}
+
+async function deleteConvoy(id) {
+  try {
+    const res = await fetch(API + "/convoys/" + id, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) {
+      alert("Erreur suppression convoi");
+      return;
+    }
+
+    await loadConvoys();
+  } catch (err) {
+    console.error(err);
+    alert("Erreur serveur suppression convoi");
+  }
+}
+
+/* =========================
    INIT
 ========================= */
 
