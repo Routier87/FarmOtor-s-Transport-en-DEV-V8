@@ -2,17 +2,21 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
+const multer = require("multer");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const DATA = path.join(__dirname, "data");
+const UPLOADS = path.join(__dirname, "uploads");
 
-if (!fs.existsSync(DATA)) {
-  fs.mkdirSync(DATA, { recursive: true });
-}
+if (!fs.existsSync(DATA)) fs.mkdirSync(DATA, { recursive: true });
+if (!fs.existsSync(UPLOADS)) fs.mkdirSync(UPLOADS, { recursive: true });
+
+app.use("/uploads", express.static(UPLOADS));
 
 function read(file) {
   const fullPath = path.join(DATA, file);
@@ -27,6 +31,18 @@ function save(file, data) {
   fs.writeFileSync(fullPath, JSON.stringify(data, null, 2), "utf8");
 }
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, UPLOADS);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname || "").toLowerCase() || ".jpg";
+    cb(null, Date.now() + "-" + Math.round(Math.random() * 1e9) + ext);
+  }
+});
+
+const upload = multer({ storage });
+
 /* =========================
    CONVOIS
 ========================= */
@@ -35,15 +51,19 @@ app.get("/convoys", (req, res) => {
   res.json(read("convoys.json"));
 });
 
-app.post("/convoys", (req, res) => {
+app.post("/convoys", upload.single("image"), (req, res) => {
   const data = read("convoys.json");
 
   const convoy = {
     id: Date.now(),
     depart: req.body.depart || "",
     arrivee: req.body.arrivee || "",
+    entrepriseDepart: req.body.entrepriseDepart || "",
+    entrepriseArrivee: req.body.entrepriseArrivee || "",
     date: req.body.date || "",
-    heure: req.body.heure || ""
+    heure: req.body.heure || "",
+    serveur: req.body.serveur || "",
+    image: req.file ? `/uploads/${req.file.filename}` : ""
   };
 
   data.push(convoy);
@@ -52,30 +72,30 @@ app.post("/convoys", (req, res) => {
   res.json(convoy);
 });
 
+app.delete("/convoys/:id", (req, res) => {
+  let data = read("convoys.json");
+
+  const convoy = data.find((x) => String(x.id) === String(req.params.id));
+  if (convoy && convoy.image) {
+    const fileName = convoy.image.replace("/uploads/", "");
+    const fullPath = path.join(UPLOADS, fileName);
+    if (fs.existsSync(fullPath)) {
+      fs.unlinkSync(fullPath);
+    }
+  }
+
+  data = data.filter((x) => String(x.id) !== String(req.params.id));
+  save("convoys.json", data);
+
+  res.json({ ok: true });
+});
+
 /* =========================
    CANDIDATURES
 ========================= */
 
 app.get("/applications", (req, res) => {
   res.json(read("apps.json"));
-});
-
-app.post("/applications", (req, res) => {
-  const data = read("apps.json");
-
-  const appData = {
-    id: Date.now(),
-    pseudo: req.body.pseudo || "",
-    age: req.body.age || "",
-    heures: req.body.heures || "",
-    motivation: req.body.motivation || "",
-    status: "attente"
-  };
-
-  data.push(appData);
-  save("apps.json", data);
-
-  res.json(appData);
 });
 
 /* =========================
