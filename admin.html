@@ -12,26 +12,21 @@
 <header>
 
 <div class="brand">
-
-<img src="assets/logo.png">
+<img src="assets/logo.png" alt="logo">
 
 <div>
 <h1>FarmOtor's Transport</h1>
 <p>Panel administration</p>
 </div>
-
 </div>
 
 <nav>
-
 <a href="index.html">Accueil</a>
 <a href="convois.html">Convois</a>
 <a href="candidature.html">Candidature</a>
 <a href="mods.html">Mods</a>
-
-<button id="staffLoginBtn">Connexion staff</button>
-<button id="staffLogoutBtn">Déconnexion staff</button>
-
+<button id="staffLoginBtn" type="button">Connexion staff</button>
+<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
 </nav>
 
 </header>
@@ -42,11 +37,53 @@
 <div id="staffBadge"></div>
 
 <section class="hero">
-
 <h2>Panel Admin</h2>
 <p>Gestion complète du site</p>
-
 </section>
+
+
+<div class="grid">
+
+<div class="card">
+<h3>Créer un convoi</h3>
+
+<form id="adminConvoyForm">
+
+<input id="entrepriseDepart" placeholder="Entreprise départ" required>
+<input id="depart" placeholder="Ville départ" required>
+
+<input id="entrepriseArrivee" placeholder="Entreprise arrivée" required>
+<input id="arrivee" placeholder="Ville arrivée" required>
+
+<input id="date" type="date" required>
+<input id="heure" type="time" required>
+
+<select id="serveur" required>
+<option value="">Choisir un serveur</option>
+<option value="Simulation 1">Simulation 1</option>
+<option value="Simulation 2">Simulation 2</option>
+<option value="[Asia] Simulation">[Asia] Simulation</option>
+<option value="ProMods">ProMods</option>
+<option value="[US] Simulation">[US] Simulation</option>
+<option value="Arcade">Arcade</option>
+<option value="ProMods Arcade">ProMods Arcade</option>
+</select>
+
+<label for="convoyImage" class="small">Image du convoi</label>
+<input id="convoyImage" type="file" accept="image/*">
+
+<button class="btn btn-blue" type="submit">Créer le convoi</button>
+
+</form>
+</div>
+
+
+<div class="card">
+<h3>Convois créés</h3>
+<div id="adminConvoys"></div>
+</div>
+
+</div>
 
 
 <div class="grid">
@@ -59,22 +96,20 @@
 
 <input id="driverName" placeholder="Nom chauffeur" required>
 
-<select id="driverRole">
-
+<select id="driverRole" required>
+<option value="">Choisir un grade</option>
 <option value="Patron">Patron</option>
 <option value="Co-patron">Co-patron</option>
 <option value="Manager">Manager</option>
 <option value="Conducteur niveau 1">Conducteur niveau 1</option>
 <option value="Conducteur niveau 2">Conducteur niveau 2</option>
 <option value="Conducteur niveau 3">Conducteur niveau 3</option>
-
 </select>
 
 <input id="driverDiscord" placeholder="Pseudo Discord" required>
-
 <input id="driverSince" placeholder="Depuis combien de temps ?" required>
 
-<button class="btn btn-green">Ajouter chauffeur</button>
+<button class="btn btn-green" type="submit">Ajouter chauffeur</button>
 
 </form>
 
@@ -84,7 +119,6 @@
 <div class="card">
 
 <h3>Chauffeurs ajoutés</h3>
-
 <div id="adminDrivers"></div>
 
 </div>
