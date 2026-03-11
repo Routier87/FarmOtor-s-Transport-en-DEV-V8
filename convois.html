@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convois organisés</title>
+  <title>Convois</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
@@ -19,16 +20,20 @@
 
   <nav>
     <a href="index.html">Accueil</a>
-    <a href="programme.html">Créer un convoi</a>
-    <a href="admin.html">Panel Admin</a>
+    <a href="convois.html">Convois</a>
+    <a href="candidature.html">Candidature</a>
+    <a href="mods.html">Mods</a>
+    <button id="staffLoginBtn" type="button">Connexion staff</button>
+    <button id="staffLogoutBtn" type="button">Déconnexion staff</button>
   </nav>
 </header>
 
 <div class="container">
+  <div id="staffBadge"></div>
+
   <section class="hero">
-    <span class="badge">Convois</span>
     <h2>Convois organisés</h2>
-    <p>Tous les convois créés apparaissent ici automatiquement.</p>
+    <p>Les convois créés par le staff apparaissent ici.</p>
   </section>
 
   <div id="convoys"></div>
