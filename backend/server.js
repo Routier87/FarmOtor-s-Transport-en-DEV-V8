@@ -91,14 +91,6 @@ app.delete("/convoys/:id", (req, res) => {
 });
 
 /* =========================
-   CANDIDATURES
-========================= */
-
-app.get("/applications", (req, res) => {
-  res.json(read("apps.json"));
-});
-
-/* =========================
    CHAUFFEURS
 ========================= */
 
@@ -128,6 +120,14 @@ app.delete("/drivers/:id", (req, res) => {
   data = data.filter((x) => String(x.id) !== String(req.params.id));
   save("drivers.json", data);
   res.json({ ok: true });
+});
+
+/* =========================
+   CANDIDATURES
+========================= */
+
+app.get("/applications", (req, res) => {
+  res.json(read("apps.json"));
 });
 
 /* =========================
