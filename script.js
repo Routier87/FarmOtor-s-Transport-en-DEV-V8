@@ -369,8 +369,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDrivers();
 
   loadAdminApps();
-  }
-}
+
+  renderCart();
+});
 
 /* =========================
    BOUTIQUE / PANIER
