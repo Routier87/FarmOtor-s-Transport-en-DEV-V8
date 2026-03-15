@@ -130,6 +130,7 @@ async function loadConvoys() {
 
   try {
     const res = await fetch(API + "/convoys");
+
     if (!res.ok) {
       if (box) box.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
       if (adminBox) adminBox.innerHTML = `<div class="card">Erreur chargement convois.</div>`;
@@ -166,7 +167,7 @@ async function loadConvoys() {
             <span><strong>Heure :</strong> ${c.heure || "-"}</span><br>
             <span><strong>Serveur :</strong> ${c.serveur || "-"}</span><br>
             <div style="margin-top:10px;">
-              <button class="btn btn-red" onclick="deleteConvoy(${c.id})">Supprimer</button>
+              <button class="btn btn-red" type="button" onclick="deleteConvoy(${c.id})">Supprimer</button>
             </div>
           </div>
         `).join("")
@@ -252,6 +253,7 @@ async function loadDrivers() {
 
   try {
     const res = await fetch(API + "/drivers");
+
     if (!res.ok) {
       if (list) list.innerHTML = `<div class="card">Erreur chargement chauffeurs.</div>`;
       if (admin) admin.innerHTML = `<div class="card">Erreur chargement chauffeurs.</div>`;
@@ -282,7 +284,7 @@ async function loadDrivers() {
             <span><strong>Discord :</strong> ${d.discord || "-"}</span><br>
             <span><strong>Depuis :</strong> ${d.since || "-"}</span><br>
             <div style="margin-top:10px;">
-              <button class="btn btn-red" onclick="deleteDriver(${d.id})">Supprimer</button>
+              <button class="btn btn-red" type="button" onclick="deleteDriver(${d.id})">Supprimer</button>
             </div>
           </div>
         `).join("")
@@ -323,6 +325,7 @@ async function loadAdminApps() {
 
   try {
     const r = await fetch(API + "/applications");
+
     if (!r.ok) {
       a.innerHTML = `<div class="card">Erreur chargement candidatures.</div>`;
       return;
@@ -349,35 +352,17 @@ async function loadAdminApps() {
 }
 
 /* =========================
-   INIT
-========================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-  protectStaff();
-  toggleStaffLinks();
-
-  const loginBtn = document.getElementById("staffLoginBtn");
-  const logoutBtn = document.getElementById("staffLogoutBtn");
-
-  if (loginBtn) loginBtn.onclick = loginStaff;
-  if (logoutBtn) logoutBtn.onclick = logoutStaff;
-
-  adminConvoyForm();
-  loadConvoys();
-
-  driverForm();
-  loadDrivers();
-
-  loadAdminApps();
-
-  renderCart();
-});
-
-/* =========================
    BOUTIQUE / PANIER
 ========================= */
 
-let cart = JSON.parse(localStorage.getItem("farmotor_cart") || "[]");
+let cart = [];
+
+try {
+  cart = JSON.parse(localStorage.getItem("farmotor_cart") || "[]");
+  if (!Array.isArray(cart)) cart = [];
+} catch (e) {
+  cart = [];
+}
 
 function saveCart() {
   localStorage.setItem("farmotor_cart", JSON.stringify(cart));
@@ -441,7 +426,13 @@ function renderCart() {
         </div>
       </div>
       <div class="cart-remove">
-        <button class="btn btn-red" type="button" onclick="removeFromCart('${item.name.replace(/'/g, "\\'")}')">Supprimer</button>
+        <button
+          class="btn btn-red"
+          type="button"
+          onclick="removeFromCart(${JSON.stringify(item.name)})"
+        >
+          Supprimer
+        </button>
       </div>
     </div>
   `).join("");
@@ -456,3 +447,28 @@ function showDetail(name, description, price) {
     "Prix : " + price + " €"
   );
 }
+
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  protectStaff();
+  toggleStaffLinks();
+
+  const loginBtn = document.getElementById("staffLoginBtn");
+  const logoutBtn = document.getElementById("staffLogoutBtn");
+
+  if (loginBtn) loginBtn.onclick = loginStaff;
+  if (logoutBtn) logoutBtn.onclick = logoutStaff;
+
+  adminConvoyForm();
+  loadConvoys();
+
+  driverForm();
+  loadDrivers();
+
+  loadAdminApps();
+
+  renderCart();
+});
