@@ -1,13 +1,311 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Boutique</title><link rel="stylesheet" href="style.css"></head><body><header><div class="brand"><img src="assets/logo.png" alt="logo"><div><h1>FarmOtor's Transport</h1><p>Version V8 Mods + Webhook</p></div></div><nav>
-<a href="index.html">Accueil</a>
-<a href="convois.html">Convois</a>
-<a href="candidature.html">Candidature</a>
-<a href="boutique.html">Boutique</a>
-<a href="mods.html">Mods</a>
-<a href="programme.html" data-staff-only="true" class="hidden">Créer convoi</a>
-<a href="admin.html" data-staff-only="true" class="admin-link hidden">Panel Admin</a>
-<button id="staffLoginBtn" type="button">Connexion staff</button>
-<button id="staffLogoutBtn" type="button">Déconnexion staff</button>
-</nav></header><div class="container"><div id="staffBadge"></div>
-<section class="hero"><h2>Boutique FarmOtor</h2><p>Grille 10 colonnes × 5 lignes.</p></section><div class="shop-grid"><div class="shop-item"><strong>Produit 1</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 2</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 3</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 4</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 5</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 6</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 7</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 8</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 9</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 10</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 11</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 12</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 13</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 14</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 15</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 16</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 17</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 18</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 19</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 20</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 21</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 22</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 23</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 24</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 25</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 26</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 27</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 28</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 29</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 30</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 31</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 32</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 33</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 34</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 35</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 36</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 37</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 38</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 39</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 40</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 41</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 42</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 43</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 44</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 45</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 46</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 47</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 48</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 49</strong><span class="small">Article boutique</span></div><div class="shop-item"><strong>Produit 50</strong><span class="small">Article boutique</span></div></div>
-</div><script src="config.js"></script><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="assets/logo.png" alt="logo">
+    <div>
+      <h1>FarmOtor's Transport</h1>
+      <p>Boutique officielle</p>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="convois.html">Convois</a>
+    <a href="candidature.html">Candidature</a>
+    <a href="boutique.html">Boutique</a>
+    <a href="mods.html">Mods</a>
+    <button id="staffLoginBtn" type="button">Connexion staff</button>
+    <button id="staffLogoutBtn" type="button">Déconnexion staff</button>
+  </nav>
+</header>
+
+<div class="container">
+  <div id="staffBadge"></div>
+
+  <section class="hero">
+    <h2>Boutique FarmOtor's</h2>
+    <p>Vêtements et objets de la VTC.</p>
+  </section>
+
+  <div class="boutique-layout">
+    <div class="card">
+      <h3>Produits</h3>
+
+      <div id="shopGrid" class="shop-grid-5x5">
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 1</div>
+          <h4>T-shirt FarmOtor</h4>
+          <p class="small">Prix : 20 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('T-shirt FarmOtor', 20)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('T-shirt FarmOtor', 'T-shirt officiel FarmOtor.', 20)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 2</div>
+          <h4>Sweat FarmOtor</h4>
+          <p class="small">Prix : 35 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Sweat FarmOtor', 35)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Sweat FarmOtor', 'Sweat premium FarmOtor.', 35)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 3</div>
+          <h4>Casquette FarmOtor</h4>
+          <p class="small">Prix : 15 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Casquette FarmOtor', 15)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Casquette FarmOtor', 'Casquette officielle VTC.', 15)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 4</div>
+          <h4>Mug FarmOtor</h4>
+          <p class="small">Prix : 12 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Mug FarmOtor', 12)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Mug FarmOtor', 'Mug officiel FarmOtor.', 12)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 5</div>
+          <h4>Sticker FarmOtor</h4>
+          <p class="small">Prix : 5 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Sticker FarmOtor', 5)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Sticker FarmOtor', 'Sticker logo FarmOtor.', 5)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 6</div>
+          <h4>Veste FarmOtor</h4>
+          <p class="small">Prix : 49 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Veste FarmOtor', 49)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Veste FarmOtor', 'Veste officielle de la VTC.', 49)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 7</div>
+          <h4>Porte-clés</h4>
+          <p class="small">Prix : 8 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Porte-clés', 8)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Porte-clés', 'Porte-clés officiel FarmOtor.', 8)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 8</div>
+          <h4>Pull FarmOtor</h4>
+          <p class="small">Prix : 30 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Pull FarmOtor', 30)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Pull FarmOtor', 'Pull confort FarmOtor.', 30)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 9</div>
+          <h4>Poster FarmOtor</h4>
+          <p class="small">Prix : 10 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Poster FarmOtor', 10)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Poster FarmOtor', 'Poster décoratif VTC.', 10)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 10</div>
+          <h4>Gourde FarmOtor</h4>
+          <p class="small">Prix : 18 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Gourde FarmOtor', 18)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Gourde FarmOtor', 'Gourde de la VTC.', 18)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 11</div>
+          <h4>Tapis souris</h4>
+          <p class="small">Prix : 14 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Tapis souris', 14)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Tapis souris', 'Tapis souris FarmOtor.', 14)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 12</div>
+          <h4>Hoodie FarmOtor</h4>
+          <p class="small">Prix : 42 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Hoodie FarmOtor', 42)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Hoodie FarmOtor', 'Hoodie officiel FarmOtor.', 42)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 13</div>
+          <h4>Badge métal</h4>
+          <p class="small">Prix : 6 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Badge métal', 6)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Badge métal', 'Badge collection FarmOtor.', 6)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 14</div>
+          <h4>Bonnet FarmOtor</h4>
+          <p class="small">Prix : 16 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Bonnet FarmOtor', 16)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Bonnet FarmOtor', 'Bonnet officiel FarmOtor.', 16)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 15</div>
+          <h4>Polo FarmOtor</h4>
+          <p class="small">Prix : 28 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Polo FarmOtor', 28)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Polo FarmOtor', 'Polo officiel FarmOtor.', 28)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 16</div>
+          <h4>Lampe LED</h4>
+          <p class="small">Prix : 22 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Lampe LED', 22)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Lampe LED', 'Lampe déco FarmOtor.', 22)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 17</div>
+          <h4>Chargeur USB</h4>
+          <p class="small">Prix : 19 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Chargeur USB', 19)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Chargeur USB', 'Accessoire FarmOtor.', 19)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 18</div>
+          <h4>Bracelet FarmOtor</h4>
+          <p class="small">Prix : 7 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Bracelet FarmOtor', 7)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Bracelet FarmOtor', 'Bracelet officiel.', 7)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 19</div>
+          <h4>Écharpe FarmOtor</h4>
+          <p class="small">Prix : 17 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Écharpe FarmOtor', 17)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Écharpe FarmOtor', 'Écharpe de la VTC.', 17)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 20</div>
+          <h4>Serviette FarmOtor</h4>
+          <p class="small">Prix : 13 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Serviette FarmOtor', 13)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Serviette FarmOtor', 'Serviette officielle.', 13)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 21</div>
+          <h4>Coque téléphone</h4>
+          <p class="small">Prix : 21 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Coque téléphone', 21)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Coque téléphone', 'Coque FarmOtor.', 21)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 22</div>
+          <h4>Pin FarmOtor</h4>
+          <p class="small">Prix : 4 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Pin FarmOtor', 4)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Pin FarmOtor', 'Pin métallique officiel.', 4)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 23</div>
+          <h4>Maillot FarmOtor</h4>
+          <p class="small">Prix : 32 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Maillot FarmOtor', 32)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Maillot FarmOtor', 'Maillot officiel VTC.', 32)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 24</div>
+          <h4>Clé USB</h4>
+          <p class="small">Prix : 11 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Clé USB', 11)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Clé USB', 'Clé USB FarmOtor.', 11)">Détail</button>
+          </div>
+        </div>
+
+        <div class="shop-card">
+          <div class="shop-thumb">Produit 25</div>
+          <h4>Pack supporter</h4>
+          <p class="small">Prix : 55 €</p>
+          <div class="shop-actions">
+            <button class="btn btn-green" onclick="addToCart('Pack supporter', 55)">Ajouter au panier</button>
+            <button class="btn btn-blue" onclick="showDetail('Pack supporter', 'Pack complet supporter FarmOtor.', 55)">Détail</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card cart-box">
+      <h3>Panier</h3>
+      <div id="cartItems">Aucun article dans le panier.</div>
+      <hr>
+      <p><strong>Total :</strong> <span id="cartTotal">0</span> €</p>
+      <button class="btn btn-red" type="button" onclick="clearCart()">Vider le panier</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
