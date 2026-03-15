@@ -369,4 +369,89 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDrivers();
 
   loadAdminApps();
-});
+  }
+}
+
+/* =========================
+   BOUTIQUE / PANIER
+========================= */
+
+let cart = JSON.parse(localStorage.getItem("farmotor_cart") || "[]");
+
+function saveCart() {
+  localStorage.setItem("farmotor_cart", JSON.stringify(cart));
+}
+
+function addToCart(name, price) {
+  const found = cart.find(item => item.name === name);
+
+  if (found) {
+    found.qty += 1;
+  } else {
+    cart.push({
+      name,
+      price,
+      qty: 1
+    });
+  }
+
+  saveCart();
+  renderCart();
+  alert(name + " ajouté au panier ✅");
+}
+
+function removeFromCart(name) {
+  cart = cart.filter(item => item.name !== name);
+  saveCart();
+  renderCart();
+}
+
+function clearCart() {
+  cart = [];
+  saveCart();
+  renderCart();
+}
+
+function getCartTotal() {
+  return cart.reduce((total, item) => total + (item.price * item.qty), 0);
+}
+
+function renderCart() {
+  const cartItems = document.getElementById("cartItems");
+  const cartTotal = document.getElementById("cartTotal");
+
+  if (!cartItems || !cartTotal) return;
+
+  if (!cart.length) {
+    cartItems.innerHTML = "Aucun article dans le panier.";
+    cartTotal.textContent = "0";
+    return;
+  }
+
+  cartItems.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-row">
+        <div>
+          <strong>${item.name}</strong><br>
+          <span class="small">Prix : ${item.price} € | Quantité : ${item.qty}</span>
+        </div>
+        <div>
+          <strong>${item.price * item.qty} €</strong>
+        </div>
+      </div>
+      <div class="cart-remove">
+        <button class="btn btn-red" type="button" onclick="removeFromCart('${item.name.replace(/'/g, "\\'")}')">Supprimer</button>
+      </div>
+    </div>
+  `).join("");
+
+  cartTotal.textContent = getCartTotal();
+}
+
+function showDetail(name, description, price) {
+  alert(
+    "Produit : " + name + "\\n\\n" +
+    "Description : " + description + "\\n\\n" +
+    "Prix : " + price + " €"
+  );
+}
